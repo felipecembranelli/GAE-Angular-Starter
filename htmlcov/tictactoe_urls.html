@@ -21,9 +21,9 @@
             <span class='pc_cov'>0%</span>
         </h1>
         <h2 class='stats'>
-            11 statements
+            13 statements
             <span class='run hide_run' onclick='toggle_lines(this, "run")'>0 run</span>
-            <span class='mis' onclick='toggle_lines(this, "mis")'>11 missing</span>
+            <span class='mis' onclick='toggle_lines(this, "mis")'>13 missing</span>
             <span class='exc' onclick='toggle_lines(this, "exc")'>0 excluded</span>
             
         </h2>
@@ -46,10 +46,21 @@
 <p id='n10' class='stm mis'><a href='#n10'>10</a></p>
 <p id='n11' class='stm mis'><a href='#n11'>11</a></p>
 <p id='n12' class='stm mis'><a href='#n12'>12</a></p>
-<p id='n13' class='stm mis'><a href='#n13'>13</a></p>
+<p id='n13' class='pln'><a href='#n13'>13</a></p>
 <p id='n14' class='stm mis'><a href='#n14'>14</a></p>
-<p id='n15' class='pln'><a href='#n15'>15</a></p>
+<p id='n15' class='stm mis'><a href='#n15'>15</a></p>
 <p id='n16' class='pln'><a href='#n16'>16</a></p>
+<p id='n17' class='stm mis'><a href='#n17'>17</a></p>
+<p id='n18' class='stm mis'><a href='#n18'>18</a></p>
+<p id='n19' class='pln'><a href='#n19'>19</a></p>
+<p id='n20' class='pln'><a href='#n20'>20</a></p>
+<p id='n21' class='pln'><a href='#n21'>21</a></p>
+<p id='n22' class='pln'><a href='#n22'>22</a></p>
+<p id='n23' class='pln'><a href='#n23'>23</a></p>
+<p id='n24' class='pln'><a href='#n24'>24</a></p>
+<p id='n25' class='pln'><a href='#n25'>25</a></p>
+<p id='n26' class='pln'><a href='#n26'>26</a></p>
+<p id='n27' class='pln'><a href='#n27'>27</a></p>
                 
             </td>
             <td class='text' valign='top'>
@@ -65,10 +76,21 @@
 <p id='t10' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/get_new_board$&#39;</span><span class='op'>,</span> <span class='str'>&#39;get_new_board&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t11' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/is_board_valid$&#39;</span><span class='op'>,</span> <span class='str'>&#39;is_board_valid&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
 <p id='t12' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/is_move_valid$&#39;</span><span class='op'>,</span> <span class='str'>&#39;is_move_valid&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
-<p id='t13' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/get_next_move$&#39;</span><span class='op'>,</span> <span class='str'>&#39;get_next_move&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
+<p id='t13' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t14' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/game_status$&#39;</span><span class='op'>,</span> <span class='str'>&#39;game_status&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
-<p id='t15' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t16' class='pln'><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t15' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/get_next_move$&#39;</span><span class='op'>,</span> <span class='str'>&#39;get_next_move&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
+<p id='t16' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t17' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/use/(?P&lt;alternate&gt;\w+)/game_status$&#39;</span><span class='op'>,</span> <span class='str'>&#39;game_status&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
+<p id='t18' class='stm mis'>&nbsp; <span class='op'>(</span><span class='str'>r&#39;^/use/(?P&lt;alternate&gt;\w+)/get_next_move$&#39;</span><span class='op'>,</span> <span class='str'>&#39;get_next_move&#39;</span><span class='op'>)</span><span class='op'>,</span><span class='strut'>&nbsp;</span></p>
+<p id='t19' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t20' class='pln'>&nbsp; <span class='com'>#(r&#39;^/use/(?P&lt;string&gt;\w+)/game_status$&#39;, &#39;game_status&#39;),&nbsp; &nbsp; </span><span class='strut'>&nbsp;</span></p>
+<p id='t21' class='pln'>&nbsp; <span class='com'>#(r&#39;^/use/(?P&lt;string&gt;\w+)/get_next_move$&#39;, &#39;get_next_move&#39;),</span><span class='strut'>&nbsp;</span></p>
+<p id='t22' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t23' class='pln'><span class='com'>#url(r&#39;^tournament/(?P&lt;tournament_id&gt;\d+)&#39;, &#39;tournament&#39;), </span><span class='strut'>&nbsp;</span></p>
+<p id='t24' class='pln'><span class='com'>#(r&#39;^evaluate_interface/(?P&lt;interface_id&gt;\d+)/&#39;, &#39;evaluate_interface&#39;),</span><span class='strut'>&nbsp;</span></p>
+<p id='t25' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t26' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t27' class='pln'><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
                 
             </td>
         </tr>

@@ -117,37 +117,46 @@ def is_board_valid(request):
     result = player.is_board_valid(board)
     return http.HttpResponse(json.dumps(result))
 
-def game_status(request):
+def game_status(request, alternate=None):
     #Get a board out of the POST or GET
     input = get_input_from_request(request)
     if input.has_key('error'):
-        return http.HttpResponse('Problem parsing passed in json.'+input['error']) 
+        message = 'Problem parsing passed in json.'+input['error']
+        return http.HttpResponse(message) 
  
     board = input['board']
     player = TicTacToe.TicTacToe()
     result = player.game_status(board)
     return http.HttpResponse(json.dumps(result))
 
-def get_next_move(request):
+def get_next_move(request, alternate=None):
     #Get move and board from POST or GET
     input = get_input_from_request(request)
     if input.has_key('error'):
-        return http.HttpResponse('Problem parsing passed in json.'+input['error']) 
+        message = 'Problem parsing passed in json.'+input['error']
+        if alternate: 
+            message += '<br> using alternate player '+alternate
+            message += '<br> available alternates are '
+            for player in get_players():
+                message += '<br>'+player
+        return http.HttpResponse(message) 
+
+    board = input['board']
 
     player = TicTacToe.RandomTicTacToe()
-    #player = TicTacToe.TicTacToe()
-    board = input['board']
-   
-#    if request.GET:
-#        alternate = request.GET.get('alternate')
-#    if alternate:
-#        players = [TicTacToe.TicTacToe(), TicTacToe.CenterGrabTicTacToe(), TicTacToe.RandomTicTacToe(),TicTacToe.CenterGrabRandomTicTacToe(),TicTacToe.BottomUpTicTacToe(), TicTacToe.HunterTicTacToe()]
-#        index = int(alternate)
-#        player = players[index]        
+    #player = TicTacToe.TicTacToe()]
+
+    if alternate:
+        players = get_players()
+        if alternate in players:
+            player = players[alternate]        
 
     result = player.get_next_move(board)
     return http.HttpResponse(json.dumps(result))
 
+def get_players():
+    return TicTacToe.get_players()
+    
 def is_move_valid(request):
     #Get move and board from POST or GET
     input = get_input_from_request(request)

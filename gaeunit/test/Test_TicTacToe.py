@@ -112,7 +112,11 @@ class TicTacToeTest(unittest.TestCase):
             board=move
 
     def test_round_robin(self):
+        
         players = [TicTacToe.TicTacToe(), TicTacToe.CenterGrabTicTacToe(), TicTacToe.RandomTicTacToe(),TicTacToe.CenterGrabRandomTicTacToe(),TicTacToe.BottomUpTicTacToe(), TicTacToe.HunterTicTacToe()]
+        players.append(TicTacToe.InvalidReturnTicTacToe())
+        players.append(TicTacToe.LoopBackTicTacToe())
+        #players.append(TicTacToe.NoReturnTicTacToe())
         
         points = {}
         losses = {}

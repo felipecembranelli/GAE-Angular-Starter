@@ -12,6 +12,19 @@ import logging
 #from google.appengine.api import urlfetch
 #from google.appengine.api import memcache
 
+def get_players():
+    players = {}
+    players['TicTacToe'] = TicTacToe()
+    players['CenterGrabTicTacToe'] = CenterGrabTicTacToe()
+    players['RandomTicTacToe'] = RandomTicTacToe()
+    players['BottomUpTicTacToe'] = BottomUpTicTacToe()
+    players['HunterTicTacToe'] = HunterTicTacToe()
+    players['InvalidReturnTicTacToe'] = InvalidReturnTicTacToe()
+    players['LoopBackTicTacToe'] = LoopBackTicTacToe()
+    #players['NoReturnTicTacToe'] = NoReturnTicTacToe()
+    return players
+
+
 class TicTacToe():
     name = 'TicTacToe'
     def get_name(self):
@@ -138,8 +151,19 @@ class TicTacToe():
         for i in range(9):
             if log==True: print board + '\n'
             turn = referee.game_status(board)['turn']
+            otherPlayer = 'O'
+            if turn==otherPlayer: 
+                otherPlayer = 'X'
+            #Need to have a timeout check here. 
             move = player[turn].get_next_move(board)['move']
+            
             moves.append(move)
+            
+            isMoveValid = referee.is_move_valid(board,move)['valid']
+            if not isMoveValid:
+                return otherPlayer+' WON'
+            
+            #Check for status key
             status = referee.game_status(move)
             #self.assertEqual(True, referee.is_move_valid(board, move)['valid'])
             if status['status']!='PLAYING':
@@ -154,6 +178,21 @@ class BottomUpTicTacToe(TicTacToe):
     index = board.rfind('*')
     return board[:index]+turn+board[index+1:]
 
+class InvalidReturnTicTacToe(TicTacToe):
+  name = "InvalidReturnTicTacToe"
+  def move_calculation(self,board,turn):
+    return 'Invalid Board'
+
+class LoopBackTicTacToe(TicTacToe):
+  name = "BadReturnTicTacToe"
+  def move_calculation(self,board,turn):
+    return board
+
+class NoReturnTicTacToe(TicTacToe):
+  name = "NoReturnTicTacToe"
+  def move_calculation(self,board,turn):
+    time.sleep(1000)    
+    return None
       
 class CenterGrabTicTacToe(TicTacToe):
   name = "CenterGrabTicTacToe"

@@ -266,8 +266,6 @@ def fetch_from_url(url, jsonRequestDict):
 
 def urls_head_to_head(playerX, playerO, referee,log=False):
         player = {'X':playerX, 'O': playerO}
-        #player = {'X':'http://localhost:8080/tictactoe', 'O': 'http://localhost:8080/tictactoe'}
-        #referee = 'http://localhost:8080/tictactoe'
         
         result = fetch_from_url(referee+'/get_new_board', {})
         logging.debug(result)
@@ -282,15 +280,29 @@ def urls_head_to_head(playerX, playerO, referee,log=False):
             logging.debug(result)
             turn = result['turn']
             
+            otherPlayer = 'O'
+            if turn==otherPlayer: 
+                otherPlayer = 'X'
+
+            #Add timeout         
             result = fetch_from_url(player[turn]+'/get_next_move', {'board':board})
             logging.debug(result)
             
+            if not 'move' in result:
+                return otherPlayer+' WON'
+                        
             move = result['move']
             moves.append(move)
 
+            result = fetch_from_url(referee+'/is_move_valid', {'board':board,'move':move})
+            isMoveValid = result['valid']
+            if not isMoveValid:
+                return otherPlayer+' WON'
+
             result = fetch_from_url(referee+'/game_status', {'board':move})
             logging.debug(result)
-
+            
+            #Need error checking here. 
             status = result
             if status['status']!='PLAYING':
               #print '\n'+status['status']
@@ -317,7 +329,8 @@ def run_tournament_heat(request,id=None):
 #                  params={'id': int(id)})
     logging.info('Enqueued tournament heat '+str(id))
     return http.HttpResponseNotFound('Enqueued tournament heat '+str(id)) 
-    
+   
+#Move this to the models class since not request object interaction.  
 #To be enqueued
 def live_run_tournament_heat(request, id=None):
 
@@ -331,11 +344,9 @@ def live_run_tournament_heat(request, id=None):
         logging.info('No such tournament heat.')
         return http.HttpResponseNotFound('No such tournament heat.') 
     
-    #return http.HttpResponseNotFound('Will process tournmanet heat with id '+str(id))
- 
-    #referee = 'http://localhost:8080/tictactoe'
-    #players = ['http://localhost:8080/tictactoe', 'http://localhost:8080/tictactoe','http://localhost:8080/tictactoe', 'http://localhost:8080/tictactoe']
-    
+    tournamentHeat.finished = False
+    tournamentHeat.put()
+       
     apps = models.App.all()
     appNames = {}
     
