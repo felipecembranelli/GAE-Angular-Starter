@@ -351,7 +351,8 @@ def live_run_tournament_heat(request, id=None):
     appNames = {}
     
     players = {}
-    referee = None
+    #referee = None
+    referee = 'http://deli.appspot.com/tictactoe'
     for app in apps: 
         players[app.key().id()] = app.url
         if not referee: referee = app.url
