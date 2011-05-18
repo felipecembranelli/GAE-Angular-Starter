@@ -245,9 +245,10 @@ def fetch_from_url(url, jsonRequestDict):
     response_time = datetime.datetime.now()
     logging.debug('fetching from '+url)
     try:
-        deadline = 5
+        deadline = 10
         result = urlfetch.fetch(url=url,
                                 payload=params,
+                                #method=urlfetch.GET,
                                 method=urlfetch.POST,
                                 deadline=deadline,
                                 headers={'Content-Type': 'application/x-www-form-urlencoded'})
@@ -256,21 +257,24 @@ def fetch_from_url(url, jsonRequestDict):
         delta = response_time - request_time
         microseconds = delta.seconds * 1000000 + delta.microseconds
         jsonresponse = result.content
-        logging.debug('url returned json '+jsonresponse)
+        logging.info('url %s returned json %s in %s microseconds',url,jsonresponse, microseconds)
         return json.loads(jsonresponse)
     
     except:
         e = sys.exc_info()[1]
-        logging.error('Problem parsing '+str(e))
+        logging.warning('Catching url fetch or JSON parsing problem %s while calling url %s with parameters %s received %s',e,url, params, jsonresponse)
         return {'error': 'Problem parsing passed in json.'+str(e)}
 
 def urls_head_to_head(playerX, playerO, referee,log=False):
         player = {'X':playerX, 'O': playerO}
         
         result = fetch_from_url(referee+'/get_new_board', {})
-        logging.debug(result)
-        board = result['board']
-              
+        logging.info('Retrieving new board %s', result)
+        
+        if not 'board' in result:
+            logging.error("No board key returned from referee %s result was %s", referee, result)
+        
+        board = result['board']      
         moves = []
         for i in range(9):
             if log==True: 
@@ -278,29 +282,36 @@ def urls_head_to_head(playerX, playerO, referee,log=False):
     
             result = fetch_from_url(referee+'/game_status', {'board':board})
             logging.debug(result)
-            turn = result['turn']
             
+            if not 'turn' in result:
+                 logging.error("No turn key returned from referee %s result was %s", referee, result)
+                                
+            turn = result['turn']       
             otherPlayer = 'O'
             if turn==otherPlayer: 
                 otherPlayer = 'X'
 
             #Add timeout         
             result = fetch_from_url(player[turn]+'/get_next_move', {'board':board})
-            logging.debug(result)
             
             if not 'move' in result:
+                logging.info('player %s did not return a move key in result %s',player[turn],result)
                 return otherPlayer+' WON'
                         
             move = result['move']
             moves.append(move)
 
             result = fetch_from_url(referee+'/is_move_valid', {'board':board,'move':move})
+            
+            if not 'valid' in result:
+                logging.error('No valid key returned when calling is_move_valid from referee %s got result %s', referee, result)
+            
             isMoveValid = result['valid']
             if not isMoveValid:
                 return otherPlayer+' WON'
 
             result = fetch_from_url(referee+'/game_status', {'board':move})
-            logging.debug(result)
+            logging.info(result)
             
             #Need error checking here. 
             status = result
@@ -381,6 +392,7 @@ def live_run_tournament_heat(request, id=None):
             y = appY.key().id()
             if x!=y:
                 #result = self.head_to_head(players[x], players[y], TicTacToe())
+                logging.info("playing %s against %s with referee %s", players[x], players[y], referee)
                 result = urls_head_to_head(players[x], players[y], referee)
                 
                 if 'X' in result: 
