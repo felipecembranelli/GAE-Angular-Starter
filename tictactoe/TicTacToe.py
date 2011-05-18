@@ -24,7 +24,25 @@ def get_players():
     #players['NoReturnTicTacToe'] = NoReturnTicTacToe()
     return players
 
+def local_return(appurl, function, jsonRequestDict):
+    app = TicTacToe()
+    players = get_players()
+    for appKey in players:
+      #if appurl=='DEFAULT_TICTACTOE':  
+      if appurl=='DEFAULT_'+appKey.upper():
+        logging.info('Using local app %s', appKey)
+        app = players[appKey] 
 
+    if function=='get_new_board':
+        return getattr(app, function)()
+    elif function=='is_move_valid':
+        return getattr(app, function)(jsonRequestDict['board'],jsonRequestDict['move'] )
+    else:
+        return getattr(app, function)(jsonRequestDict['board'])
+        #methodToCall = getattr(app, function)
+        #result = methodToCall()
+        #result = getattr(foo, 'bar')()
+               
 class TicTacToe():
     name = 'TicTacToe'
     def get_name(self):

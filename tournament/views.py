@@ -32,6 +32,9 @@ from forms import CourseForm, AppForm, TournamentHeatForm
 import base64
 from myutil import common
 
+import tictactoe.TicTacToe as TicTacToe
+
+
 def respond(request, user, template, params=None):
   """Helper to render a response, passing standard stuff to the response.
 
@@ -124,7 +127,7 @@ def add_app(request):
   user = get_user(request)
   #if not user:
   #  return auth_error(common.getHostURI(request))
-  models.App.add_app(name='New Game App', user=user, url='http://deli.appspot.com/tictactoe')
+  models.App.add_app(name='New Game App', user=user, url='DEFAULT_TICTACTOE')#'http://deli.appspot.com/tictactoe'
   return http.HttpResponseRedirect('/')
   #return respond(request, user, 'index', {'next': '/', 'courses':courses, 'apps':apps})
   
@@ -215,14 +218,14 @@ def check_app(request, id=None):
     get_next_move_result = None
     board = 'X**\n***\n***'
     try:
-        game_status_result = fetch_from_url(app.url+'/game_status', {'board':board})
+        game_status_result = fetch_from_url(app.url,'game_status', {'board':board})
         message += 'Result from /game_status was '+str(game_status_result)+'<br>'
     except:
         e = sys.exc_info()[1]
         message += 'Received an error from /game_status '+str(e)+'<br>'
     
     try:
-        get_next_move_result = fetch_from_url(app.url+'/get_next_move', {'board':board})
+        get_next_move_result = fetch_from_url(app.url,'get_next_move', {'board':board})
         message += 'Result from /get_next_move was '+str(get_next_move_result)+'<br>'
     except:
         e = sys.exc_info()[1]
@@ -231,11 +234,15 @@ def check_app(request, id=None):
     #return http.HttpResponseNotFound(message)
     #Create dictionary and render to template
     return respond(request, None, 'check_app', { 'app':app,'game_status_result':game_status_result, 'get_next_move_result':get_next_move_result})
-
       
-    
-def fetch_from_url(url, jsonRequestDict):
+def fetch_from_url(appurl, function, jsonRequestDict):
     logging.debug('Checking an app')
+    
+    #return local_return()
+    if appurl[0:8]=='DEFAULT_':
+        return TicTacToe.local_return(appurl, function, jsonRequestDict)
+       
+    url = appurl+'/'+function
        
     requestJSON = json.dumps(jsonRequestDict)
     params = urllib.urlencode({'jsonrequest': requestJSON})
@@ -268,7 +275,7 @@ def fetch_from_url(url, jsonRequestDict):
 def urls_head_to_head(playerX, playerO, referee,log=False):
         player = {'X':playerX, 'O': playerO}
         
-        result = fetch_from_url(referee+'/get_new_board', {})
+        result = fetch_from_url(referee,'get_new_board', {})
         logging.info('Retrieving new board %s', result)
         
         if not 'board' in result:
@@ -280,7 +287,7 @@ def urls_head_to_head(playerX, playerO, referee,log=False):
             if log==True: 
                 logging.info(board)
     
-            result = fetch_from_url(referee+'/game_status', {'board':board})
+            result = fetch_from_url(referee, 'game_status', {'board':board})
             logging.debug(result)
             
             if not 'turn' in result:
@@ -292,7 +299,7 @@ def urls_head_to_head(playerX, playerO, referee,log=False):
                 otherPlayer = 'X'
 
             #Add timeout         
-            result = fetch_from_url(player[turn]+'/get_next_move', {'board':board})
+            result = fetch_from_url(player[turn],'get_next_move', {'board':board})
             
             if not 'move' in result:
                 logging.info('player %s did not return a move key in result %s',player[turn],result)
@@ -301,7 +308,7 @@ def urls_head_to_head(playerX, playerO, referee,log=False):
             move = result['move']
             moves.append(move)
 
-            result = fetch_from_url(referee+'/is_move_valid', {'board':board,'move':move})
+            result = fetch_from_url(referee,'is_move_valid', {'board':board,'move':move})
             
             if not 'valid' in result:
                 logging.error('No valid key returned when calling is_move_valid from referee %s got result %s', referee, result)
@@ -310,7 +317,7 @@ def urls_head_to_head(playerX, playerO, referee,log=False):
             if not isMoveValid:
                 return otherPlayer+' WON'
 
-            result = fetch_from_url(referee+'/game_status', {'board':move})
+            result = fetch_from_url(referee,'game_status', {'board':move})
             logging.info(result)
             
             #Need error checking here. 
@@ -362,8 +369,10 @@ def live_run_tournament_heat(request, id=None):
     appNames = {}
     
     players = {}
+    referee = 'DEFAULT_TICTACTOE'
     #referee = None
-    referee = 'http://deli.appspot.com/tictactoe'
+    #referee = 'http://127.0.0.1:8081/tictactoe'
+    
     for app in apps: 
         players[app.key().id()] = app.url
         if not referee: referee = app.url

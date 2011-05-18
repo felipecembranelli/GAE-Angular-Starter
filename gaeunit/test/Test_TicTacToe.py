@@ -22,6 +22,23 @@ class TicTacToeTest(unittest.TestCase):
         pass
     def tearDown(self):
         pass
+    
+    def test_local_return(self):
+        appurl = 'DEFAULT_TICTACTOE'
+        function = 'get_new_board'
+        result = TicTacToe.local_return(appurl, function, {})
+        self.assertEqual(True, 'board' in result)
+        
+        function = 'is_board_valid'
+        next_result = TicTacToe.local_return(appurl, function, result)
+        if not next_result:
+            self.assertTrue(False)
+        
+        function=='is_move_valid'
+        d = {'board':'***/n***/n***', 'move':'X**/n***/n***'}
+        result = TicTacToe.local_return(appurl, function, d)
+        self.assertEqual(True, 'valid' in result)
+        
     def test_get_players(self):
         result = TicTacToe.get_players()
         self.assertEqual(True, len(result)>0)
