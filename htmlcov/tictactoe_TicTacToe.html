@@ -5,7 +5,7 @@
     
     
     <meta http-equiv='X-UA-Compatible' content='IE=emulateIE7' />
-    <title>Coverage for tictactoe/TicTacToe: 93%</title>
+    <title>Coverage for tictactoe/TicTacToe: 98%</title>
     <link rel='stylesheet' href='style.css' type='text/css'>
     <script type='text/javascript' src='jquery-1.3.2.min.js'></script>
     <script type='text/javascript' src='coverage_html.js'></script>
@@ -18,12 +18,12 @@
 <div id='header'>
     <div class='content'>
         <h1>Coverage for <b>tictactoe/TicTacToe</b> :
-            <span class='pc_cov'>93%</span>
+            <span class='pc_cov'>98%</span>
         </h1>
         <h2 class='stats'>
             168 statements
-            <span class='run hide_run' onclick='toggle_lines(this, "run")'>156 run</span>
-            <span class='mis' onclick='toggle_lines(this, "mis")'>12 missing</span>
+            <span class='run hide_run' onclick='toggle_lines(this, "run")'>165 run</span>
+            <span class='mis' onclick='toggle_lines(this, "mis")'>3 missing</span>
             <span class='exc' onclick='toggle_lines(this, "exc")'>0 excluded</span>
             
         </h2>
@@ -49,16 +49,16 @@
 <p id='n13' class='pln'><a href='#n13'>13</a></p>
 <p id='n14' class='pln'><a href='#n14'>14</a></p>
 <p id='n15' class='stm run hide_run'><a href='#n15'>15</a></p>
-<p id='n16' class='stm mis'><a href='#n16'>16</a></p>
-<p id='n17' class='stm mis'><a href='#n17'>17</a></p>
-<p id='n18' class='stm mis'><a href='#n18'>18</a></p>
-<p id='n19' class='stm mis'><a href='#n19'>19</a></p>
-<p id='n20' class='stm mis'><a href='#n20'>20</a></p>
-<p id='n21' class='stm mis'><a href='#n21'>21</a></p>
-<p id='n22' class='stm mis'><a href='#n22'>22</a></p>
-<p id='n23' class='stm mis'><a href='#n23'>23</a></p>
+<p id='n16' class='stm run hide_run'><a href='#n16'>16</a></p>
+<p id='n17' class='stm run hide_run'><a href='#n17'>17</a></p>
+<p id='n18' class='stm run hide_run'><a href='#n18'>18</a></p>
+<p id='n19' class='stm run hide_run'><a href='#n19'>19</a></p>
+<p id='n20' class='stm run hide_run'><a href='#n20'>20</a></p>
+<p id='n21' class='stm run hide_run'><a href='#n21'>21</a></p>
+<p id='n22' class='stm run hide_run'><a href='#n22'>22</a></p>
+<p id='n23' class='stm run hide_run'><a href='#n23'>23</a></p>
 <p id='n24' class='pln'><a href='#n24'>24</a></p>
-<p id='n25' class='stm mis'><a href='#n25'>25</a></p>
+<p id='n25' class='stm run hide_run'><a href='#n25'>25</a></p>
 <p id='n26' class='pln'><a href='#n26'>26</a></p>
 <p id='n27' class='pln'><a href='#n27'>27</a></p>
 <p id='n28' class='stm run hide_run'><a href='#n28'>28</a></p>
@@ -314,16 +314,16 @@
 <p id='t13' class='pln'><span class='com'>#from google.appengine.api import memcache</span><span class='strut'>&nbsp;</span></p>
 <p id='t14' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t15' class='stm run hide_run'><span class='key'>def</span> <span class='nam'>get_players</span><span class='op'>(</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t16' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span> <span class='op'>=</span> <span class='op'>{</span><span class='op'>}</span><span class='strut'>&nbsp;</span></p>
-<p id='t17' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;TicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>TicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t18' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;CenterGrabTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>CenterGrabTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t19' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;RandomTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>RandomTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t20' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;BottomUpTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>BottomUpTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t21' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;HunterTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>HunterTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t22' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;InvalidReturnTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>InvalidReturnTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t23' class='stm mis'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;LoopBackTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>LoopBackTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t16' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span> <span class='op'>=</span> <span class='op'>{</span><span class='op'>}</span><span class='strut'>&nbsp;</span></p>
+<p id='t17' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;TicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>TicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t18' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;CenterGrabTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>CenterGrabTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t19' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;RandomTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>RandomTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t20' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;BottomUpTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>BottomUpTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t21' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;HunterTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>HunterTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t22' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;InvalidReturnTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>InvalidReturnTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t23' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>players</span><span class='op'>[</span><span class='str'>&#39;LoopBackTicTacToe&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>LoopBackTicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t24' class='pln'>&nbsp; &nbsp; <span class='com'>#players[&#39;NoReturnTicTacToe&#39;] = NoReturnTicTacToe()</span><span class='strut'>&nbsp;</span></p>
-<p id='t25' class='stm mis'>&nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>players</span><span class='strut'>&nbsp;</span></p>
+<p id='t25' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>players</span><span class='strut'>&nbsp;</span></p>
 <p id='t26' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t27' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t28' class='stm run hide_run'><span class='key'>class</span> <span class='nam'>TicTacToe</span><span class='op'>(</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>

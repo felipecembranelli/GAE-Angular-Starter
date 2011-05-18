@@ -6,7 +6,7 @@ Created on April 25, 2011
 import unittest
 #from google.appengine.ext import db
 import logging
-from hello import models
+from tournament import models
 
 #import urllib
 #import datetime

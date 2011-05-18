@@ -22,6 +22,9 @@ class TicTacToeTest(unittest.TestCase):
         pass
     def tearDown(self):
         pass
+    def test_get_players(self):
+        result = TicTacToe.get_players()
+        self.assertEqual(True, len(result)>0)
         
     def test_is_board_valid(self): 
         board = 'X**\n***\n**'

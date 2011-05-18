@@ -3,7 +3,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import urlfetch
 from django.utils import simplejson
-from hello import models
+from tournament import models
 import logging
 import urllib
 
