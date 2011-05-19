@@ -272,26 +272,35 @@ def fetch_from_url(appurl, function, jsonRequestDict):
         logging.warning('Catching url fetch or JSON parsing problem %s while calling url %s with parameters %s received %s',e,url, params, jsonresponse)
         return {'error': 'Problem parsing passed in json.'+str(e)}
 
-def urls_head_to_head(playerX, playerO, referee,log=False):
-        player = {'X':playerX, 'O': playerO}
+#Need to pass in full apps to play and record game with app references
+#Need tournament as well. 
+def play_game(playerX, playerO, referee, tournamentHeat):
+    
+        #Find existing game
+        game = models.Game.all().filter('appX=',playerX).filter('appO=',playerO).filter('tournamentHeat=',tournamentHeat).get()
+        if not game:
+            game = models.Game(appX=playerX,appO=playerO,tournamentHeat=tournamentHeat)
+            game.put()
         
-        result = fetch_from_url(referee,'get_new_board', {})
+        #if not existing game create one. 
+        
+        
+        player = {'X':playerX, 'O': playerO}
+        result = fetch_from_url(referee.url,'get_new_board', {})
         logging.info('Retrieving new board %s', result)
         
         if not 'board' in result:
-            logging.error("No board key returned from referee %s result was %s", referee, result)
+            logging.error("No board key returned from referee %s result was %s", referee.url, result)
         
         board = result['board']      
         moves = []
         for i in range(9):
-            if log==True: 
-                logging.info(board)
     
-            result = fetch_from_url(referee, 'game_status', {'board':board})
+            result = fetch_from_url(referee.url, 'game_status', {'board':board})
             logging.debug(result)
             
             if not 'turn' in result:
-                 logging.error("No turn key returned from referee %s result was %s", referee, result)
+                 logging.error("No turn key returned from referee %s result was %s", referee.url, result)
                                 
             turn = result['turn']       
             otherPlayer = 'O'
@@ -299,25 +308,25 @@ def urls_head_to_head(playerX, playerO, referee,log=False):
                 otherPlayer = 'X'
 
             #Add timeout         
-            result = fetch_from_url(player[turn],'get_next_move', {'board':board})
+            result = fetch_from_url(player[turn].url,'get_next_move', {'board':board})
             
             if not 'move' in result:
-                logging.info('player %s did not return a move key in result %s',player[turn],result)
+                logging.info('player %s did not return a move key in result %s',player[turn].url,result)
                 return otherPlayer+' WON'
                         
             move = result['move']
             moves.append(move)
 
-            result = fetch_from_url(referee,'is_move_valid', {'board':board,'move':move})
+            result = fetch_from_url(referee.url,'is_move_valid', {'board':board,'move':move})
             
             if not 'valid' in result:
-                logging.error('No valid key returned when calling is_move_valid from referee %s got result %s', referee, result)
+                logging.error('No valid key returned when calling is_move_valid from referee %s got result %s', referee.url, result)
             
             isMoveValid = result['valid']
             if not isMoveValid:
                 return otherPlayer+' WON'
 
-            result = fetch_from_url(referee,'game_status', {'board':move})
+            result = fetch_from_url(referee.url,'game_status', {'board':move})
             logging.info(result)
             
             #Need error checking here. 
@@ -362,28 +371,29 @@ def live_run_tournament_heat(request, id=None):
         logging.info('No such tournament heat.')
         return http.HttpResponseNotFound('No such tournament heat.') 
     
+    result = run_round(tournamentHeat)
+    
+    return http.HttpResponse(json.dumps(result))             
+
+def run_round(tournamentHeat, players=None):
     tournamentHeat.finished = False
     tournamentHeat.put()
-       
-    apps = models.App.all()
+    
+    referee = models.App(name='Referee', url='DEFAULT_TICTACTOE')
+    
+    if not players:
+        players = {}
+        apps = models.App.all()
+        for app in apps: 
+            players[app.key().id()] = app
+    
     appNames = {}
-    
-    players = {}
-    referee = 'DEFAULT_TICTACTOE'
-    #referee = None
-    #referee = 'http://127.0.0.1:8081/tictactoe'
-    
-    for app in apps: 
-        players[app.key().id()] = app.url
-        if not referee: referee = app.url
-        
-        appNames[app.key().id()] = app.name
+    for appID, app in players.iteritems():
+        appNames[appID] = app.name
     
     if len(players)<2: 
         return http.HttpResponseNotFound('Less than 2 apps registered.') 
-    
-    #players = [TicTacToe(), CenterGrabTicTacToe(), RandomTicTacToe(),CenterGrabRandomTicTacToe(),BottomUpTicTacToe(), HunterTicTacToe()]
-        
+            
     points = {}
     losses = {}
     matchResults = {}
@@ -401,8 +411,8 @@ def live_run_tournament_heat(request, id=None):
             y = appY.key().id()
             if x!=y:
                 #result = self.head_to_head(players[x], players[y], TicTacToe())
-                logging.info("playing %s against %s with referee %s", players[x], players[y], referee)
-                result = urls_head_to_head(players[x], players[y], referee)
+                logging.info("playing %s against %s with referee %s", players[x].url, players[y].url, referee.url)
+                result = play_game(players[x], players[y], referee, tournamentHeat)
                 
                 if 'X' in result: 
                     points[x]+=1
@@ -441,8 +451,8 @@ def live_run_tournament_heat(request, id=None):
     tournamentHeat.jsonResult = json.dumps(result)
     tournamentHeat.finished = True
     tournamentHeat.put()
-    
-    return http.HttpResponse(json.dumps(result))             
+    return result
+
     #Update the view to list supported and unsupported interfaces.
     #return respond(request,None,'tournamentresult', {'results':results})
 

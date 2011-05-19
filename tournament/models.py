@@ -106,4 +106,10 @@ class TournamentHeat(db.Model):
         newHeat = TournamentHeat(name=name)
         newHeat.put()
 
-    
+class Game(db.Model):
+    tournamentHeat = db.ReferenceProperty(TournamentHeat, required=True)
+    appX = db.ReferenceProperty(App, collection_name='XGames', required=False)
+    appO = db.ReferenceProperty(App, collection_name='OGames', required=False)
+    finished = db.BooleanProperty(default=False)
+    jsonResult = db.TextProperty(required=False,default=None)
+    created = db.DateTimeProperty(auto_now_add=True)

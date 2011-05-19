@@ -32,7 +32,7 @@ data = ''
 try: 
   print 'Fetching index'
   data = urllib.urlopen('http://localhost:8080').read() 
-  print data
+  #print data
   
   print 'Fetching test data'
   data = urllib.urlopen('http://localhost:8080/test?format=plain').read() 
