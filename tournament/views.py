@@ -188,7 +188,7 @@ def view_heat_result(request, id=None):
       for k in ids:
         result = None
         if dict.has_key(k):
-          result = {'n':dict[k]}
+          result = {'n':dict[k], 'i':i, 'k':k}
         else: result = '*'
         row.append(result)
       matchResults.append(row)
@@ -200,7 +200,7 @@ def view_heat_result(request, id=None):
     #Build result row dicts and insert into resultRowDict list
     
     #Create dictionary and render to template
-    return respond(request, None, 'heatresult', {'matchResults':matchResults,'heatResult':heatResult,'appNames':appNames})
+    return respond(request, None, 'heatresult', {'heatID':id,'matchResults':matchResults,'heatResult':heatResult,'appNames':appNames})
 
 def check_app(request, id=None):
     app = None
@@ -282,9 +282,6 @@ def play_game(playerX, playerO, referee, tournamentHeat):
             game = models.Game(appX=playerX,appO=playerO,tournamentHeat=tournamentHeat)
             game.put()
         
-        #if not existing game create one. 
-        
-        
         player = {'X':playerX, 'O': playerO}
         result = fetch_from_url(referee.url,'get_new_board', {})
         logging.info('Retrieving new board %s', result)
@@ -293,7 +290,10 @@ def play_game(playerX, playerO, referee, tournamentHeat):
             logging.error("No board key returned from referee %s result was %s", referee.url, result)
         
         board = result['board']      
+        
         moves = []
+        move = None
+                
         for i in range(9):
     
             result = fetch_from_url(referee.url, 'game_status', {'board':board})
@@ -312,6 +312,7 @@ def play_game(playerX, playerO, referee, tournamentHeat):
             
             if not 'move' in result:
                 logging.info('player %s did not return a move key in result %s',player[turn].url,result)
+                game.log_move_and_save(move=i,turn=turn, board='No Reply',status=otherPlayer+'  WON')
                 return otherPlayer+' WON'
                         
             move = result['move']
@@ -324,6 +325,7 @@ def play_game(playerX, playerO, referee, tournamentHeat):
             
             isMoveValid = result['valid']
             if not isMoveValid:
+                game.log_move_and_save(move=i,turn=turn, board='Not Valid->'+move,status=otherPlayer+'  WON')                
                 return otherPlayer+' WON'
 
             result = fetch_from_url(referee.url,'game_status', {'board':move})
@@ -332,8 +334,15 @@ def play_game(playerX, playerO, referee, tournamentHeat):
             #Need error checking here. 
             status = result
             if status['status']!='PLAYING':
+              #put a break here rather than return. 
               #print '\n'+status['status']
+              # update game and return
+              # game.finished = db.BooleanProperty(default=False)
+              # game.jsonResult = db.TextProperty(required=False,default=None)
+              game.log_move_and_save(move=i,turn=turn, board=move,status=status)
               return status['status']
+            
+            game.log_move_and_save(move=i,turn=turn, board=move,status=status)
             board = move
             
         return 'No result'
@@ -373,7 +382,45 @@ def live_run_tournament_heat(request, id=None):
     
     result = run_round(tournamentHeat)
     
-    return http.HttpResponse(json.dumps(result))             
+    return http.HttpResponse(json.dumps(result))
+
+def view_game_result(request, tournamentHeatID=None, appXID=None, appOID=None):  
+    
+    tournamentHeat = None
+    appX = None
+    appO = None
+    
+    if not tournamentHeatID or not appXID or not appOID:
+        logging.warning('Please pass in a valid tournamentHeatID, appXID, and appOID')
+        return http.HttpResponseNotFound('Please pass in a valid tournamentHeatID, appXID, and appOID: /view_game_result/tournamentHeat/id/appXID/id/appOID/id')
+    
+    tournamentHeat = models.TournamentHeat.get_by_id(int(tournamentHeatID))
+    if not tournamentHeat: 
+        logging.warning('No such tournament heat.')
+        return http.HttpResponseNotFound('No such tournament heat.') 
+    
+    appX = models.App.get_by_id(int(appXID))
+    if not appX: 
+        logging.warning('No such app for appXID.')
+        return http.HttpResponseNotFound('No such app for appXID') 
+    
+    appO = models.App.get_by_id(int(appOID))
+    if not appO: 
+        logging.warning('No such app for appOID.')
+        return http.HttpResponseNotFound('No such app for appOID') 
+    
+    game = models.Game.all().filter('tournamentHeat = ', tournamentHeat).filter('appX = ',appX).filter('appO = ',appO).get()
+    if not game:
+        logging.warning('No game found for th %s appxid %s appoid %s',tournamentHeatID, appXID, appOID )
+        return http.HttpResponseNotFound('No game found for th '+tournamentHeatID+' appxid '+appXID+' appoid '+appOID ) 
+        
+    #result = run_round(tournamentHeat)
+    #result = 'Under Development'
+    #result = game.game_results_string()
+    result = game.game_boards_html()
+    #result = game.game_log_string()
+    return http.HttpResponse(result)
+           
 
 def run_round(tournamentHeat, players=None):
     tournamentHeat.finished = False

@@ -111,5 +111,47 @@ class Game(db.Model):
     appX = db.ReferenceProperty(App, collection_name='XGames', required=False)
     appO = db.ReferenceProperty(App, collection_name='OGames', required=False)
     finished = db.BooleanProperty(default=False)
+    boards = db.StringListProperty()
+    jsongamelogs = db.StringListProperty()
     jsonResult = db.TextProperty(required=False,default=None)
     created = db.DateTimeProperty(auto_now_add=True)
+    
+    def log_move_and_save(self, move, turn, board, status):        
+        d = dict()
+        d['move'] = move
+        d['turn'] = turn
+        d['board'] = board
+        d['status'] = status
+        
+        self.jsongamelogs.append(json.dumps(d))
+        self.boards.append(board)
+        self.put()
+        #Add a list of strings to track the boards. 
+    
+    def game_results_string(self):
+        result = ''
+        for board in self.boards:
+            result += board
+            result += '\n'
+        return 'Game history: \n'+result
+    
+    def game_boards_html(self):
+        result = '<br>'
+        for board in self.boards:
+            result +='<br>'
+            htmlboard = board.replace('\n', '<br>')
+            result += htmlboard
+        return 'Game history: <br>\n'+result
+    
+    def game_log_string(self):
+        result = ''
+        for jsongamelog in self.jsongamelogs:
+            gamelog = json.loads(jsongamelog)
+            
+            result += 'move '  + str(gamelog['move']) + ' ' 
+            result += 'turn '  + str(gamelog['turn']) + ' '
+            result += 'board \n' + str(gamelog['board']) + ' \n'
+            result += 'status ' + str(gamelog['status']['status']) + ' '
+            result += '\n'
+        return 'Game log: \n'+result
+                

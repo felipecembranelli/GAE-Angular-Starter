@@ -48,6 +48,10 @@ class Test_Tournament_Views(unittest.TestCase):
         numGames = models.Game.all().count()
         self.assertEqual(2, numGames)
         
+        for game in models.Game.all():
+            logging.info('******** Game Log ********')
+            logging.info(game.game_log_string())
+
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

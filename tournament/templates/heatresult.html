@@ -32,7 +32,7 @@ Tie = 0.5 <br>
    {% for y in l %} 
   	  <td align="center"> 
   	    {% if y.n %}
-  	      {{y.n}}
+  	      <a href="/view_game_result/{{heatID}}/appXID/{{y.i}}/appOID/{{y.k}}"> {{y.n}} </a>
   	    {% else %}
   	      <b>{{y}}</b>
   	    {% endif %}

@@ -22,6 +22,10 @@ class Test_Models(unittest.TestCase):
         pass
     def tearDown(self):
         for x in models.User.all(): x.delete()
+        for x in models.App.all(): x.delete()
+        for x in models.Game.all(): x.delete()
+        for x in models.TournamentHeat.all(): x.delete()
+        
         
     def test_user_creation(self):  
         self.assertEqual(1, 1)
@@ -77,7 +81,29 @@ class Test_Models(unittest.TestCase):
         results = models.Course.all()
         self.assertEqual(results.count(),1)
     
+    def test_game_creation(self):  
+        results = models.Game.all()
+        self.assertEqual(results.count(),0) 
         
+        appX = models.App(name='TestApp 1', url='DEFAULT_TICTACTOE')
+        appX.put()
+        
+        appO = models.App(name='TestApp 2', url='DEFAULT_TICTACTOE')
+        appO.put()
+          
+        tournamentHeat = models.TournamentHeat(name='TestTournament')
+        tournamentHeat.put()
+        
+        game = models.Game(appX=appX,appO=appO,tournamentHeat=tournamentHeat)
+        game.put()
+        
+        results = models.Game.all()
+        self.assertEqual(results.count(),1)
+        
+        game.game_results_string()
+        game.game_boards_html()
+        game.game_log_string()
+                
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
