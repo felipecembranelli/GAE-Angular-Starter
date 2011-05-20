@@ -25,7 +25,7 @@ class Test_Models(unittest.TestCase):
         for x in models.App.all(): x.delete()
         for x in models.Game.all(): x.delete()
         for x in models.TournamentHeat.all(): x.delete()
-        
+        for x in models.Course.all(): x.delete()
         
     def test_user_creation(self):  
         self.assertEqual(1, 1)

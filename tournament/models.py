@@ -141,6 +141,7 @@ class Game(db.Model):
             result +='<br>'
             htmlboard = board.replace('\n', '<br>')
             result += htmlboard
+            result += '<br>'
         return 'Game history: <br>\n'+result
     
     def game_log_string(self):
