@@ -48,6 +48,10 @@ def respond(request, user, template, params=None):
   Raises:
     Whatever render_to_response(template, params) raises.
   """
+  
+  if request.path =='TEST': 
+      return template, params
+  
   ip = request.META['REMOTE_ADDR']
   if params is None:
     params = {}

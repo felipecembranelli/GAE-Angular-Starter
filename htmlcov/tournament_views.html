@@ -5,7 +5,7 @@
     
     
     <meta http-equiv='X-UA-Compatible' content='IE=emulateIE7' />
-    <title>Coverage for tournament/views: 71%</title>
+    <title>Coverage for tournament/views: 70%</title>
     <link rel='stylesheet' href='style.css' type='text/css'>
     <script type='text/javascript' src='jquery-1.3.2.min.js'></script>
     <script type='text/javascript' src='coverage_html.js'></script>
@@ -18,12 +18,12 @@
 <div id='header'>
     <div class='content'>
         <h1>Coverage for <b>tournament/views</b> :
-            <span class='pc_cov'>71%</span>
+            <span class='pc_cov'>70%</span>
         </h1>
         <h2 class='stats'>
             351 statements
-            <span class='run hide_run' onclick='toggle_lines(this, "run")'>248 run</span>
-            <span class='mis' onclick='toggle_lines(this, "mis")'>103 missing</span>
+            <span class='run hide_run' onclick='toggle_lines(this, "run")'>246 run</span>
+            <span class='mis' onclick='toggle_lines(this, "mis")'>105 missing</span>
             <span class='exc' onclick='toggle_lines(this, "exc")'>0 excluded</span>
             
         </h2>
@@ -425,8 +425,8 @@
 <p id='n389' class='pln'><a href='#n389'>389</a></p>
 <p id='n390' class='stm run hide_run'><a href='#n390'>390</a></p>
 <p id='n391' class='stm run hide_run'><a href='#n391'>391</a></p>
-<p id='n392' class='stm run hide_run'><a href='#n392'>392</a></p>
-<p id='n393' class='stm run hide_run'><a href='#n393'>393</a></p>
+<p id='n392' class='stm mis'><a href='#n392'>392</a></p>
+<p id='n393' class='stm mis'><a href='#n393'>393</a></p>
 <p id='n394' class='pln'><a href='#n394'>394</a></p>
 <p id='n395' class='stm run hide_run'><a href='#n395'>395</a></p>
 <p id='n396' class='pln'><a href='#n396'>396</a></p>
@@ -979,8 +979,8 @@
 <p id='t389' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t390' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>tournamentHeat</span> <span class='op'>=</span> <span class='nam'>models</span><span class='op'>.</span><span class='nam'>TournamentHeat</span><span class='op'>.</span><span class='nam'>get_by_id</span><span class='op'>(</span><span class='nam'>int</span><span class='op'>(</span><span class='nam'>id</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t391' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>if</span> <span class='key'>not</span> <span class='nam'>tournamentHeat</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t392' class='stm run hide_run'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>logging</span><span class='op'>.</span><span class='nam'>info</span><span class='op'>(</span><span class='str'>&#39;No such tournament heat.&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t393' class='stm run hide_run'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>http</span><span class='op'>.</span><span class='nam'>HttpResponseNotFound</span><span class='op'>(</span><span class='str'>&#39;No such tournament heat.&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t392' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>logging</span><span class='op'>.</span><span class='nam'>info</span><span class='op'>(</span><span class='str'>&#39;No such tournament heat.&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t393' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>http</span><span class='op'>.</span><span class='nam'>HttpResponseNotFound</span><span class='op'>(</span><span class='str'>&#39;No such tournament heat.&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t394' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t395' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>result</span> <span class='op'>=</span> <span class='nam'>run_round</span><span class='op'>(</span><span class='nam'>tournamentHeat</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t396' class='pln'><span class='strut'>&nbsp;</span></p>

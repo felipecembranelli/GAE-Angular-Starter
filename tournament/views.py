@@ -131,7 +131,7 @@ def add_app(request):
   user = get_user(request)
   #if not user:
   #  return auth_error(common.getHostURI(request))
-  models.App.add_app(name='New Game App', user=user, url='DEFAULT_TICTACTOE')#'http://deli.appspot.com/tictactoe'
+  models.App.add_app(name='New Game App', user=user, url='DEFAULT_TICTACTOE')
   return http.HttpResponseRedirect('/')
   #return respond(request, user, 'index', {'next': '/', 'courses':courses, 'apps':apps})
   
