@@ -21,8 +21,8 @@
             <span class='pc_cov'>98%</span>
         </h1>
         <h2 class='stats'>
-            180 statements
-            <span class='run hide_run' onclick='toggle_lines(this, "run")'>177 run</span>
+            179 statements
+            <span class='run hide_run' onclick='toggle_lines(this, "run")'>176 run</span>
             <span class='mis' onclick='toggle_lines(this, "mis")'>3 missing</span>
             <span class='exc' onclick='toggle_lines(this, "exc")'>0 excluded</span>
             
@@ -66,7 +66,7 @@
 <p id='n30' class='stm run hide_run'><a href='#n30'>30</a></p>
 <p id='n31' class='pln'><a href='#n31'>31</a></p>
 <p id='n32' class='stm run hide_run'><a href='#n32'>32</a></p>
-<p id='n33' class='stm run hide_run'><a href='#n33'>33</a></p>
+<p id='n33' class='pln'><a href='#n33'>33</a></p>
 <p id='n34' class='stm run hide_run'><a href='#n34'>34</a></p>
 <p id='n35' class='pln'><a href='#n35'>35</a></p>
 <p id='n36' class='pln'><a href='#n36'>36</a></p>
@@ -348,7 +348,7 @@
 <p id='t30' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>for</span> <span class='nam'>appKey</span> <span class='key'>in</span> <span class='nam'>players</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
 <p id='t31' class='pln'>&nbsp; &nbsp; &nbsp; <span class='com'>#if appurl==&#39;DEFAULT_TICTACTOE&#39;:&nbsp; </span><span class='strut'>&nbsp;</span></p>
 <p id='t32' class='stm run hide_run'>&nbsp; &nbsp; &nbsp; <span class='key'>if</span> <span class='nam'>appurl</span><span class='op'>==</span><span class='str'>&#39;DEFAULT_&#39;</span><span class='op'>+</span><span class='nam'>appKey</span><span class='op'>.</span><span class='nam'>upper</span><span class='op'>(</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t33' class='stm run hide_run'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>logging</span><span class='op'>.</span><span class='nam'>info</span><span class='op'>(</span><span class='str'>&#39;Using local app %s&#39;</span><span class='op'>,</span> <span class='nam'>appKey</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t33' class='pln'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='com'>#logging.info(&#39;Using local app %s&#39;, appKey)</span><span class='strut'>&nbsp;</span></p>
 <p id='t34' class='stm run hide_run'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>app</span> <span class='op'>=</span> <span class='nam'>players</span><span class='op'>[</span><span class='nam'>appKey</span><span class='op'>]</span><span class='strut'>&nbsp;</span></p>
 <p id='t35' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t36' class='pln'>&nbsp; &nbsp; <span class='com'>#Call the function by name function on app</span><span class='strut'>&nbsp;</span></p>

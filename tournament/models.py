@@ -94,6 +94,17 @@ class App(db.Model):
     def add_app(name, user, url):
         newApp = App(name=name, url=url)
         newApp.put()
+    
+    def delete_games(self):
+        #appXGames = models.Game.all().filter('appX = ', app)
+        for game in self.XGames: 
+            game.delete()
+        for game in self.OGames: 
+            game.delete()
+    
+    def delete(self):
+        self.delete_games()
+        return super(App, self).delete()
 
 class TournamentHeat(db.Model):
     name = db.StringProperty(required=True)
@@ -105,9 +116,18 @@ class TournamentHeat(db.Model):
     def add_tournament_heat(name):
         newHeat = TournamentHeat(name=name)
         newHeat.put()
+    
+    def delete_games(self):
+        #appXGames = models.Game.all().filter('appX = ', app)
+        for game in self.tournamentGames: 
+            game.delete()
+    
+    def delete(self):
+        self.delete_games()
+        return super(TournamentHeat, self).delete()
 
 class Game(db.Model):
-    tournamentHeat = db.ReferenceProperty(TournamentHeat, required=True)
+    tournamentHeat = db.ReferenceProperty(TournamentHeat, collection_name='tournamentGames', required=True)
     appX = db.ReferenceProperty(App, collection_name='XGames', required=False)
     appO = db.ReferenceProperty(App, collection_name='OGames', required=False)
     finished = db.BooleanProperty(default=False)
@@ -116,6 +136,7 @@ class Game(db.Model):
     jsonResult = db.TextProperty(required=False,default=None)
     created = db.DateTimeProperty(auto_now_add=True)
     
+
     def log_move_and_save(self, move, turn, board, status):        
         d = dict()
         d['move'] = move

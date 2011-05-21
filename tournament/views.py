@@ -141,7 +141,29 @@ def add_tournament_heat(request):
 
   models.TournamentHeat.add_tournament_heat(name='New tournament heat')    
   return http.HttpResponseRedirect('/')
-  
+
+#Need to add ownership protections
+def delete_app(request,id=None):
+    return delete_entity(request, id, c=models.App)
+
+#Need to add ownership protections
+def delete_course(request,id=None):
+    return delete_entity(request, id, c=models.Course)
+
+def delete_entity(request, id=None, c = models.Course):
+    entity = None
+    if not id:
+        logging.info('Please pass in a valid ID')
+        return http.HttpResponseNotFound('No id passed in.')
+    
+    entity = c.get_by_id(int(id))
+    if not entity: 
+        logging.info('No such entity.')
+        return http.HttpResponseNotFound('No such entity.')
+    
+    entity.delete()
+    return http.HttpResponseRedirect('/')      
+
 def edit_app(request, id=None):
     return edit_entity(request, id, c = models.App, useForm = AppForm)
 
@@ -169,15 +191,13 @@ def view_heat_result(request, id=None):
     ids = heatResultDict['ids']
     points = heatResultDict['points']
     temp = heatResultDict['matchResults']
-    logging.warn('temp = %s', temp)
 
     matchResults = []   
     
     headerRow = []
     headerRow.append('App')
     headerRow.append('Points')
-    
-    logging.warn('********** ids %s',ids)
+
     for k in ids: #temp.keys(): 
         headerRow.append(appNames[k]+' ('+str(k)+')') 
     
@@ -196,12 +216,6 @@ def view_heat_result(request, id=None):
         else: result = '*'
         row.append(result)
       matchResults.append(row)
-        #for y in v:
-        #    row.append(y)
-        #matchResults.append(row)
-
-            
-    #Build result row dicts and insert into resultRowDict list
     
     #Create dictionary and render to template
     return respond(request, None, 'heatresult', {'heatID':id,'matchResults':matchResults,'heatResult':heatResult,'appNames':appNames})
@@ -333,16 +347,10 @@ def play_game(playerX, playerO, referee, tournamentHeat):
                 return otherPlayer+' WON'
 
             result = fetch_from_url(referee.url,'game_status', {'board':move})
-            logging.info(result)
             
             #Need error checking here. 
             status = result
             if status['status']!='PLAYING':
-              #put a break here rather than return. 
-              #print '\n'+status['status']
-              # update game and return
-              # game.finished = db.BooleanProperty(default=False)
-              # game.jsonResult = db.TextProperty(required=False,default=None)
               game.log_move_and_save(move=i,turn=turn, board=move,status=status)
               return status['status']
             
@@ -478,12 +486,7 @@ def run_round(tournamentHeat, players=None):
                     points[y]+=0.5
                     matchResults[x][y] = '0.5'
         
-        #print '\n'
-        #for k in points: 
-        #  print k, 'scored', points[k], 'points', losses[k],'losses',players[k].get_name()
 
-        #sorted_list.sort(key=lambda x: x[0]) # sort by key
-        #appIDs = []
         appIDs = [x for x in points.iteritems()] 
         appIDs.sort(key=lambda x: x[1]) # sort by value
         appIDs.reverse()

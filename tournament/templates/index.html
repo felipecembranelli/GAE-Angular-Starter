@@ -77,6 +77,7 @@ href="https://pivotalexpert1.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2F
         <a href="/check_app/{{app.key.id}}/"> Check </a>
     </td>
     <td align="center">
+        <a href="/delete_app/{{app.key.id}}/"> Delete App </a>
     </td>
 
   </tr>
@@ -97,18 +98,17 @@ DEFAULT_HUNTERTICTACTOE, DEFAULT_INVALIDRETURNTICTACTOE, DEFAULT_LOOPBACKTICTACT
 {% for course in courses %}
 
   <tr>
-  	<td> {{course.name }} </td>
-   
     <td align="center">
-
+  	    {{course.name }} 
+  	</td>
+    <td align="center">
+	    {{course.key.id}}
     </td>
 	<td align="center">
 	    <a href="/edit_course/{{course.key.id}}/"> Edit </a>
     </td>
-	<td align="center">
-	    {{course.key.id}}
-    </td>
     <td align="center">
+    	<a href="/delete_course/{{course.key.id}}/"> Delete </a>
     </td>
     <td align="center">
     </td>

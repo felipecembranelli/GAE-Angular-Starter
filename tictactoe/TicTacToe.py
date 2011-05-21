@@ -30,7 +30,7 @@ def local_return(appurl, function, jsonRequestDict):
     for appKey in players:
       #if appurl=='DEFAULT_TICTACTOE':  
       if appurl=='DEFAULT_'+appKey.upper():
-        logging.info('Using local app %s', appKey)
+        #logging.info('Using local app %s', appKey)
         app = players[appKey] 
     
     #Call the function by name function on app

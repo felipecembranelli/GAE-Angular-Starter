@@ -28,10 +28,28 @@ class Test_Tournament_Views(unittest.TestCase):
         results = models.User.all()
         self.assertEqual(results.count(),1)
     
-    def test_run_tournament_heat(self):
-        pass
-                   
-    def test_add_course_and_app(self):
+    def test_add_and_delete_app(self):
+        request = http.HttpRequest()
+        request.path = 'TEST'
+        
+        result = models.App.all().count()
+        self.assertEqual(0, result) 
+        views.add_app(request)
+        result = models.App.all().count()
+        self.assertEqual(1, result) 
+        
+        app = models.App.all().get()
+        template, params = views.check_app(request, app.key().id())
+        self.assertEqual('check_app', template)
+        self.assertTrue('get_next_move_result' in params)
+        self.assertTrue('app' in params)
+        self.assertTrue('game_status_result' in params)
+        
+        views.delete_app(request, app.key().id())
+        numApps = models.App.all().count()
+        self.assertEqual(0, numApps)
+                          
+    def test_add_and_delete_course(self):
         #mock request
         request = http.HttpRequest()
         request.path = 'TEST'
@@ -42,17 +60,13 @@ class Test_Tournament_Views(unittest.TestCase):
         views.add_course(request)
         result = models.Course.all().count()
         self.assertEqual(1, result)
- 
-        result = models.App.all().count()
-        self.assertEqual(0, result) 
-        views.add_app(request)
-        result = models.App.all().count()
-        self.assertEqual(1, result) 
         
-        app = models.App.all().get()
-        template, params = views.check_app(request, app.key().id())
+        course = models.Course.all().get()
         
-
+        views.delete_course(request, course.key().id())
+        total = models.Course.all().count()
+        self.assertEqual(0, total)
+        
     def test_run_round(self):
         numPlayers = 2;
         #for player in range(numPlayers):
@@ -80,17 +94,17 @@ class Test_Tournament_Views(unittest.TestCase):
         numGames = models.Game.all().count()
         self.assertEqual(2, numGames)
         
-        #request = http.HttpRequest()
-        #request.path = 'TEST'
-        
         request = http.HttpRequest()
         request.path = 'TEST'
         
-        views.run_tournament_heat(request,tournamentHeat.key().id())
-        views.view_heat_result(request, tournamentHeat.key().id())
-        views.live_run_tournament_heat(request, tournamentHeat.key().id())
-        views.view_game_result(request, tournamentHeat.key().id(), appXID.key().id(), appOID.key().id())
-        views.edit_entity(request, tournamentHeat.key().id(), c = models.TournamentHeat, useForm = TournamentHeatForm)  
+        #Text result views
+        result = views.run_tournament_heat(request,tournamentHeat.key().id())
+        result = views.live_run_tournament_heat(request, tournamentHeat.key().id())
+        result = views.view_game_result(request, tournamentHeat.key().id(), appXID.key().id(), appOID.key().id())
+       
+        #Template Methods
+        template, params = views.view_heat_result(request, tournamentHeat.key().id())
+        template, params = views.edit_entity(request, tournamentHeat.key().id(), c = models.TournamentHeat, useForm = TournamentHeatForm)  
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

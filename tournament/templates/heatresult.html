@@ -17,18 +17,16 @@ href="https://pivotalexpert1.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2F
          </div>
          
 <br>
+<b>
 Every app in the tournament plays against every other app. Apps do not play against themselves. <br>
-The app on the left played X against the app on the top that played O. <br>
-X Won = 1<br>
-O Won = -1<br>
-Tie = 0.5 <br> 
-<br>
+The app on the left played X against the app on the top that played O. <br><br></b>
+X Won = 1, O Won = -1, Tie = 0.5 <br><br> 
  
  <table class="apps" cellspacing="0" width="900">
   
 {% for l in matchResults %}
    
-  <tr>
+  <tr style="color:#00ce1d;font-weight:bold;text-align:center">
    {% for y in l %} 
   	  <td align="center"> 
   	    {% if y.n %}
