@@ -376,7 +376,7 @@ def run_tournament_heat(request,id=None):
                   queue_name='tournament-queue') 
 #                  params={'id': int(id)})
     logging.info('Enqueued tournament heat '+str(id))
-    return http.HttpResponseNotFound('Enqueued tournament heat '+str(id)) 
+    return http.HttpResponse("Enqueued tournament heat "+str(id)+" <a href='/' >Return to home page </a>") 
    
 #Move this to the models class since not request object interaction.  
 #To be enqueued
