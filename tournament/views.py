@@ -90,19 +90,21 @@ def get_user(request):
 
 #Move this to a template. 
 def auth_error(domain_url):
-  return http.HttpResponse(content = 
-      '''<html><body>
-          You are not logined! You can <a class="rpxnow" onclick="return false;" href="https://pivotalexpert.rpxnow.com/openid/v2/signin?token_url='''+domain_url+'''%2Frpx.php">sign in here</a>!
-          <script type="text/javascript">
-            var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
-            document.write(unescape("%3Cscript src='" + rpxJsHost + "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            RPXNOW.overlay = true;
-            RPXNOW.language_preference = 'en';
-          </script>
-         </body>
-         </html>''', status = 401)
+  #is it the correct way?
+  return render_to_response("auth_error.html", {"domain_url": domain_url})
+  #return http.HttpResponse(content = 
+  #    '''<html><body>
+  #        You are not logined! You can <a class="rpxnow" onclick="return false;" href="https://pivotalexpert.rpxnow.com/openid/v2/signin?token_url='''+domain_url+'''%2Frpx.php">sign in here</a>!
+  #        <script type="text/javascript">
+  #          var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
+  #          document.write(unescape("%3Cscript src='" + rpxJsHost + "rpxnow.com/js/lib/rpx.js' type='text/javascript'%3E%3C/script%3E"));
+  #        </script>
+  #        <script type="text/javascript">
+  #          RPXNOW.overlay = true;
+  #          RPXNOW.language_preference = 'en';
+  #        </script>
+  #       </body>
+  #       </html>''', status = 401)
 
 def index(request):
   logging.info('cookies: '+str(request.COOKIES))

@@ -1,3 +1,39 @@
+body {
+	font-family: 'Droid Sans', arial, serif;
+}
+
+/*-- Structure elements --*/
+#container {
+	width: 960px;
+	margin: 0 auto;
+	padding: 10px;
+}
+
+
+/*-- table elements (gave every table a class name 'design' ) --*/
+table.design {
+	font-family: 'Droid Sans', arial, serif;
+	font-size: 16px;
+	background: #fff;
+	margin: 45px auto;
+	border-collapse: collapse;
+	text-align: left;
+	width: 850px;
+}
+
+table.design th {
+	font-size: 16px;
+	font-weight: normal;
+	padding: 10px 8px;
+	border-bottom: 2px solid #6678b1;
+}
+
+table.design td {
+	color: #669;
+	padding: 9px 9px 8px 8px;
+}
+
+
 tr.inactive {
 	background-color: #E0E0E0;
 }
