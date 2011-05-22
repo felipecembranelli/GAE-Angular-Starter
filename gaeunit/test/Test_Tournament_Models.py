@@ -77,7 +77,7 @@ class Test_Models(unittest.TestCase):
     def test_course_creation(self):  
         results = models.Course.all()
         self.assertEqual(results.count(),0)  
-        user = models.Course(name ='TestCourse').save()
+        course = models.Course(name ='TestCourse').save()
         results = models.Course.all()
         self.assertEqual(results.count(),1)
     
