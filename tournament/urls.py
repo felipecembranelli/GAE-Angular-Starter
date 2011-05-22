@@ -22,4 +22,5 @@ urlpatterns = patterns('tournament.views',
   (r'^view_heat_result/(?P<id>\d+)', 'view_heat_result'),
   (r'^check_app/(?P<id>\d+)', 'check_app'),
   (r'^view_game_result/(?P<tournamentHeatID>\w+)/appXID/(?P<appXID>\w+)/appOID/(?P<appOID>\w+)$', 'view_game_result'),
+  (r'^auth_error$', 'auth_error'),
 )

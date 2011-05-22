@@ -2,9 +2,12 @@
 <html>
   <head>
     <title>Tournament Server</title>
+
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/main.css" type="text/css">  
   </head>
   <body>
+	<div id="container">
     <div id="login">
       <br />
       {% if user %}
@@ -14,12 +17,12 @@
 href="https://pivotalexpert1.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fdeli.appspot.com%2Frpx.php"> Sign In </a>
       <br>
      {% endif %}
-         </div>
+         </div><!-- end of #login -->
 
       
-<table class="apps" cellspacing="0" width="900">
+<table class="design apps" cellspacing="0" width="900">
   <tr style="color:#00ce1d;font-weight:bold;text-align:center">
-    <td>Tournament Heat</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td></td>
+    <th>Tournament Heat</th><th>TBD</th><th>TBD</th><th>TBD</th><th>TBD</th><th></th>
   </tr>
 {% for th in tournamentHeats %}
 
@@ -55,9 +58,9 @@ href="https://pivotalexpert1.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2F
 <a href="/add_tournament_heat"> Add a tournament heat </a> 
   
       
-<table class="apps" cellspacing="0" width="900">
+<table class="design apps" cellspacing="0" width="900">
   <tr style="color:#00ce1d;font-weight:bold;text-align:center">
-    <td>App</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td></td>
+    <th>App</th><th>TBD</th><th>TBD</th><th>TBD</th><th>TBD</th><th></th>
   </tr>
 {% for app in apps %}
 
@@ -86,14 +89,14 @@ href="https://pivotalexpert1.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2F
 </table>
  
 <br>
-<a class="addApp" href="/add_app"> Add an app </a><br>
+<a class="design addApp" href="/add_app"> Add an app </a><br>
 <br>
-Available Bots:  DEFAULT_TICTACTOE, DEFAULT_CENTERGRABTICTACTOE, DEFAULT_RANDOMTICTACTOE, DEFAULT_BOTTOMUPTICTACTOE <br> 
-DEFAULT_HUNTERTICTACTOE, DEFAULT_INVALIDRETURNTICTACTOE, DEFAULT_LOOPBACKTICTACTOE
+<b>Available Bots:</b> <i> DEFAULT_TICTACTOE, DEFAULT_CENTERGRABTICTACTOE, DEFAULT_RANDOMTICTACTOE, DEFAULT_BOTTOMUPTICTACTOE <br> 
+DEFAULT_HUNTERTICTACTOE, DEFAULT_INVALIDRETURNTICTACTOE, DEFAULT_LOOPBACKTICTACTOE</i>
 <br>        
-<table class="players" cellspacing="0" width="900">
+<table class="design players" cellspacing="0" width="900">
   <tr style="color:#00ce1d;font-weight:bold;text-align:center">
-    <td>Course</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td></td>
+    <th>Course</th><th>TBD</th><th>TBD</th><th>TBD</th><th>TBD</th><th></th>
   </tr>
 {% for course in courses %}
 
@@ -130,5 +133,6 @@ DEFAULT_HUNTERTICTACTOE, DEFAULT_INVALIDRETURNTICTACTOE, DEFAULT_LOOPBACKTICTACT
       RPXNOW.overlay = true;
       RPXNOW.language_preference = 'en';
     </script>
+	</div><!-- end of #container -->
   </body>
 </html>
