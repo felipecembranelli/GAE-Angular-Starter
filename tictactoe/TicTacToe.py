@@ -12,6 +12,61 @@ import logging
 #from google.appengine.api import urlfetch
 #from google.appengine.api import memcache
 
+class BaseGameApp():
+    @staticmethod      
+    def head_to_head(playerX, playerO, referee,log=False):
+        player = {'X':playerX, 'O': playerO}
+        board = referee.get_new_board()['board']
+        moves = []
+        for i in range(9):
+            if log==True: print board + '\n'
+            turn = referee.game_status(board)['turn']
+            otherPlayer = 'O'
+            if turn==otherPlayer: 
+                otherPlayer = 'X'
+            #Need to have a timeout check here. 
+            move = player[turn].get_next_move(board)['move']
+            
+            moves.append(move)
+            
+            isMoveValid = referee.is_move_valid(board,move)['valid']
+            if not isMoveValid:
+                return otherPlayer+' WON'
+            
+            #Check for status key
+            status = referee.game_status(move)
+            #self.assertEqual(True, referee.is_move_valid(board, move)['valid'])
+            if status['status']!='PLAYING':
+              #print '\n'+status['status']
+              return status['status']
+            board = move
+        return 'Nothing returned'    
+    
+class GameApp(BaseGameApp):
+    name = 'Base GameApp. You need to override this in your subclass'
+    def get_name(self):
+        return self.name
+    
+    @staticmethod
+    def get_new_board():
+        raise NotImplemented("Please Implement this method")
+    @staticmethod
+    def is_board_valid(board):
+        raise NotImplemented("Please Implement this method")    
+    @staticmethod
+    def is_move_valid(start, move):
+        raise NotImplemented("Please Implement this method")    
+    def get_next_move(self,board):
+        raise NotImplemented("Please Implement this method")  
+
+
+class ConnectFour(GameApp):
+    name = 'ConnectFour'
+
+class Othello(GameApp):
+    name = 'Othello'
+
+#Should be part of module. Will need to move ConnectFour to its own module to support this properly. 
 def get_players():
     players = {}
     players['TicTacToe'] = TicTacToe()
@@ -24,6 +79,7 @@ def get_players():
     #players['NoReturnTicTacToe'] = NoReturnTicTacToe()
     return players
 
+#Should be part of module. Will need to move ConnectFour to its own module to support this properly. 
 def local_return(appurl, function, jsonRequestDict):
     app = TicTacToe()
     players = get_players()
@@ -40,12 +96,9 @@ def local_return(appurl, function, jsonRequestDict):
         return getattr(app, function)(jsonRequestDict['board'],jsonRequestDict['move'] )
     else:
         return getattr(app, function)(jsonRequestDict['board'])
-
-               
-class TicTacToe():
+             
+class TicTacToe(GameApp):
     name = 'TicTacToe'
-    def get_name(self):
-        return self.name
 
     @staticmethod
     def get_new_board():
@@ -160,35 +213,6 @@ class TicTacToe():
         return {'move':move,
                 'start':board}
     
-    @staticmethod      
-    def head_to_head(playerX, playerO, referee,log=False):
-        player = {'X':playerX, 'O': playerO}
-        board = referee.get_new_board()['board']
-        moves = []
-        for i in range(9):
-            if log==True: print board + '\n'
-            turn = referee.game_status(board)['turn']
-            otherPlayer = 'O'
-            if turn==otherPlayer: 
-                otherPlayer = 'X'
-            #Need to have a timeout check here. 
-            move = player[turn].get_next_move(board)['move']
-            
-            moves.append(move)
-            
-            isMoveValid = referee.is_move_valid(board,move)['valid']
-            if not isMoveValid:
-                return otherPlayer+' WON'
-            
-            #Check for status key
-            status = referee.game_status(move)
-            #self.assertEqual(True, referee.is_move_valid(board, move)['valid'])
-            if status['status']!='PLAYING':
-              #print '\n'+status['status']
-              return status['status']
-            board = move
-        return 'Nothing returned'
-
 class BottomUpTicTacToe(TicTacToe):
   name = "BottomUpTicTacToe"
   def move_calculation(self,board,turn):

@@ -11,10 +11,9 @@
     <div id="login">
       <br />
       {% if user %}
-      You are signed in with ID <strong>{{ user.user_id }}</strong>, email: <strong>{{ user.email }}</strong>. <a href="{{ sign_out }}">Sign out.</a>
+      Welcome back <strong>{{ user.nickname }}</strong> <a href="{{ sign_out }}">Sign out.</a>
       {% else %}
-      You are not signed in. <a class="rpxnow" onclick="return false;"
-href="https://pivotalexpert1.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fdeli.appspot.com%2Frpx.php"> Sign In </a>
+      You are not signed in. <a class="rpxnow" onclick="return false;" href="https://pivotalexpert.rpxnow.com/openid/v2/signin?token_url={{domain_url}}/rpx.php"> Sign In </a>
       <br>
      {% endif %}
          </div><!-- end of #login -->
@@ -121,7 +120,15 @@ DEFAULT_HUNTERTICTACTOE, DEFAULT_INVALIDRETURNTICTACTOE, DEFAULT_LOOPBACKTICTACT
 
 </table>
 <br>
-<a class="addCourse" href="/add_course"> Add a course </a>
+<a class="addCourse" href="/add_course"> Add a course </a> <br>
+
+Debug info: <br> <br>
+domain_url is {{domain_url}} <br>
+user is {{user.nickname}} <br>
+signout is {{sign_out}} <br>
+is_admin is {{is_admin}} <br>
+sign_in is {{sign_in}} <br>
+page is {{page}} <br>
  
 
     <script type="text/javascript">

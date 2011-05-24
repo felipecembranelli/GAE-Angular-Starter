@@ -4,6 +4,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import urlfetch
 from django.utils import simplejson
 from tournament import models
+
 import logging
 import urllib
 
@@ -12,6 +13,59 @@ import re
 import base64
 from myutil import common
 
+class RPXData(db.Model):
+    janrainID = db.StringProperty(required=True)
+    auth_url = db.StringProperty(required=True)
+    api_key = db.StringProperty(required=True)
+    #loginURL = db.StringProperty(required=True)
+    base_token_url = db.StringProperty(required=True)
+    created = db.DateTimeProperty(auto_now_add=True)
+     
+    @staticmethod
+    def get_rpx_data():
+        rpx = RPXData.all().order('created').get()
+        if not rpx:
+            janrainID = 'pivotalexpert'
+            auth_url = 'https://rpxnow.com/api/v2/auth_info'
+            api_key = '89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f'
+            #loginURL = 'https://pivotalexpert.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fdeli.appspot.com%2Frpx.php'
+            base_token_url = '/rpx.php' #'http://deli.appspot.com/rpx.php'
+            rpx = RPXData(janrainID = janrainID,
+                          auth_url=auth_url,
+                          api_key = api_key,
+            #             tokenURL = tokenURL, 
+                          base_token_url= base_token_url )                             
+            rpx.put()
+            #Create a default rpx entry, save it, and return it. 
+        return rpx
+     
+    @staticmethod
+    def get_janrain_id():
+        rpxdata = RPXData.get_rpx_data()
+        return rpxdata.janrainID
+ 
+    @staticmethod
+    def get_api_key():
+        rpxdata = RPXData.get_rpx_data()
+        return rpxdata.api_key
+        #return '89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f'
+                
+    @staticmethod
+    def get_auth_url():
+        rpxdata = RPXData.get_rpx_data()
+        return rpxdata.auth_url
+        #return 'https://rpxnow.com/api/v2/auth_info'
+ 
+    @staticmethod
+    def get_token_url(domain_url):
+        rpxdata = RPXData.get_rpx_data()
+        return domain_url+rpx.base_token_url
+    
+    @staticmethod
+    def get_login_url(domain_url):
+        rpxdata = RPXData.get_rpx_data()
+        return 'https://'+ rpxdata.get_janrain_id() +'.rpxnow.com/openid/v2/signin?token_url='+domain_url+'/rpx.php'   
+    
 class RPXTokenHandler(webapp.RequestHandler):
   def get(self):
     logging.info('RPXTokenHandler.get start')
@@ -20,10 +74,10 @@ class RPXTokenHandler(webapp.RequestHandler):
     logging.info('RPXTokenHandler.post start')
     token = self.request.get('token')
     logging.info('token: '+str(token))
-    url = 'https://rpxnow.com/api/v2/auth_info'
+    url = RPXData.get_auth_url() #'https://rpxnow.com/api/v2/auth_info'
     args = {
       'format': 'json',
-      'apiKey': '89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f',
+      'apiKey': RPXData.get_api_key(),#'89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f',
       'token': token
       }
     logging.info('calling url: '+str(url))
@@ -50,8 +104,9 @@ class RPXTokenHandler(webapp.RequestHandler):
       # log the user in using the unique_identifier
       # this should your cookies or session you already have implemented
       self.log_user_in(user_id=unique_identifier, nickname=nickname, email=email)
-      logging.info('login successful, redirect to /')
-      self.redirect('/')
+      logging.info('login successful, redirect to /login/')
+#      self.redirect('/profile/%s' % unique_identifier)
+      self.redirect('/?value=seems_to_work')
     else:
       logging.error('there was an error in rpx login')
       self.redirect('/')
