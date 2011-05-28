@@ -2,20 +2,45 @@
 <html>
   <head>
     <title>Tournament Server</title>
-
+	<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
 	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/main.css" type="text/css">  
+  
+      <script type "text/javascript">
+      
+    $(function () {
+      	//alert("Starting");
+		$.ajax({
+      		type: "GET",
+      		url: "../jsonapi/get_user",
+      		dataType: 'json',
+      		success: update_greeting,
+      		timeout: 100
+      	});
+      });
+    
+    function update_greeting(data, status) {
+       //alert("in function");
+       key = "nickname";
+  	   if (data.hasOwnProperty(key)){
+    	  //alert ("Nickname = "+data[key]);
+    	  $("#nickname").text("Welcome back "+data[key]);
+  	   }
+  	  
+    }
+    
+    
+    </script>
   </head>
   <body>
 	<div id="container">
     <div id="login">
       <br />
-      {% if user %}
-      Welcome back <strong>{{ user.nickname }}</strong> <a href="{{ sign_out }}">Sign out.</a>
-      {% else %}
+
+       <strong><p id="nickname"> </p></strong><a href="{{ sign_out }}">Sign out.</a>
+<br>
       You are not signed in. <a class="rpxnow" onclick="return false;" href="https://pivotalexpert.rpxnow.com/openid/v2/signin?token_url={{domain_url}}/rpx.php"> Sign In </a>
       <br>
-     {% endif %}
          </div><!-- end of #login -->
 
       

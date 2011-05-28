@@ -56,10 +56,11 @@ handlers:
 - url: /gui
   static_dir: gui
   expiration: 1m
-  
-- url: /jsonapi
-  static_dir: jsonapi
-  expiration: 1m
+
+# This is just for testing. When live this should be commented out so that livejsonapi intercepts all calls.
+#- url: /jsonapi
+#  static_dir: jsonapi
+#  expiration: 1m
   
 - url: /static
   static_dir: static

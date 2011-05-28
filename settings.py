@@ -107,7 +107,8 @@ INSTALLED_APPS = (
      'tournament',
      'gaeunit',
      'myutil',
-     'tictactoe'
+     'tictactoe',
+     'livejsonapi'
 )
 
 AUTHENTICATION_BACKENDS = ('rpx.backends.RpxBackend',

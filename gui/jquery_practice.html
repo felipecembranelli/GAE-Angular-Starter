@@ -13,7 +13,7 @@
         //callback("My data", "My Status");
         $.ajax({
       		type: "GET",
-      		url: "../jsonapi/heat_result",
+      		url: "../jsonapi/get_heat_result",
       		dataType: 'json',
       		success: callback,
       		timeout: 100
@@ -21,7 +21,7 @@
       	
 		$.ajax({
       		type: "GET",
-      		url: "../jsonapi/user",
+      		url: "../jsonapi/get_user",
       		dataType: 'json',
       		success: update_greeting,
       		timeout: 100
