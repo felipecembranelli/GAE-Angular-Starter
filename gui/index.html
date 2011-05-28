@@ -16,7 +16,7 @@
       		url: "../jsonapi/get_user",
       		dataType: 'json',
       		success: update_greeting,
-      		timeout: 100
+      		timeout: 10000
       	});
 		
     	//Get tournament heats
@@ -25,7 +25,7 @@
       		url: "../jsonapi/get_tournament_heats",
       		dataType: 'json',
       		success: update_tournament_heats,
-      		timeout: 100
+      		timeout: 10000
       	});
 		
       });
@@ -42,7 +42,7 @@
     function update_tournament_heats(data, status) {
     	$.each(data, function(key, val)  {
             //alert(val.name);
-    		$("<tr> <td> "+val.name+" </td></tr>").insertAfter("#tournament_heat_table");
+    		$("<tr> <td> "+val.name+" </td><td align='center'> "+val.name+" </td></tr>").insertAfter("#tournament_table_header");
           });
     	
         key = "nickname";
@@ -66,37 +66,10 @@
          </div><!-- end of #login -->
 
       
-<table id="tournament_heat_table" class="design apps" cellspacing="0" width="900">
-  <tr style="color:#00ce1d;font-weight:bold;text-align:center">
+<table class="tournament" cellspacing="0" width="900">
+  <tr id="tournament_table_header" style="color:#00ce1d;font-weight:bold;text-align:center">
     <th>Tournament Heat</th><th>Finished</th><th>Edit</th><th>ID</th><th>Run</th><th>Result</th>
   </tr>
-
-  <tr>
-  	<td> {{th.name }} </td>
-   
-    <td align="center">
-         {{th.finished}}
-    </td>
-	<td align="center">
-	    <a href="/edit_tournament_heat/{{th.key.id}}/"> Edit </a>
-    </td>
-	<td align="center">
-	    {{th.key.id}}
-    </td>
-    <td align="center">
-        <a href="/run_tournament_heat/{{th.key.id}}/"> Run tournament heat </a>
-    </td>
-    <td align="center">
-        {% if th.finished %}
-        <a href="/view_heat_result/{{th.key.id}}/"> View heat result </a>
-        {% endif %}
-        
-    </td>
-    <td align="center">
-    </td>
-
-  </tr>
-
 
 </table>
  
@@ -113,7 +86,7 @@
   <tr>
   	<td> {{app.name }} </td>
    
-    <td align="center">
+    <td align="center"><
          {{app.url}}
     </td>
 	<td align="center">
