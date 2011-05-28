@@ -36,6 +36,18 @@ def get_user(request):
     result = {"nickname": "live tommy"}
     return http.HttpResponse(json.dumps(result))
  
+def get_tournament_heats(request):
+    heats = models.TournamentHeat.all()
+    
+    result = []
+    for heat in heats:
+        d = {}
+        d['name'] = heat.name
+        d['jsonResult'] = heat.jsonResult
+        result.append(d)
+
+    return http.HttpResponse(json.dumps(result))
+
 def get_heat_result(request):
     #heat = models.TournamentHeat.all().get()
     result = {}

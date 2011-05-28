@@ -10,6 +10,7 @@
       
     $(function () {
       	//alert("Starting");
+    	//Get user name
 		$.ajax({
       		type: "GET",
       		url: "../jsonapi/get_user",
@@ -17,6 +18,16 @@
       		success: update_greeting,
       		timeout: 100
       	});
+		
+    	//Get tournament heats
+		$.ajax({
+      		type: "GET",
+      		url: "../jsonapi/get_tournament_heats",
+      		dataType: 'json',
+      		success: update_tournament_heats,
+      		timeout: 100
+      	});
+		
       });
     
     function update_greeting(data, status) {
@@ -26,10 +37,21 @@
     	  //alert ("Nickname = "+data[key]);
     	  $("#nickname").text("Welcome back "+data[key]);
   	   }
-  	  
     }
     
-    
+    function update_tournament_heats(data, status) {
+    	$.each(data, function(key, val)  {
+            //alert(val.name);
+    		$("<tr> <td> "+val.name+" </td></tr>").insertAfter("#tournament_heat_table");
+          });
+    	
+        key = "nickname";
+   	   if (data.hasOwnProperty(key)){
+     	  //alert ("Nickname = "+data[key]);
+     	  $("#nickname").text("Welcome back "+data[key]);
+   	   }
+     }
+ 
     </script>
   </head>
   <body>
@@ -44,11 +66,10 @@
          </div><!-- end of #login -->
 
       
-<table class="design apps" cellspacing="0" width="900">
+<table id="tournament_heat_table" class="design apps" cellspacing="0" width="900">
   <tr style="color:#00ce1d;font-weight:bold;text-align:center">
-    <th>Tournament Heat</th><th>TBD</th><th>TBD</th><th>TBD</th><th>TBD</th><th></th>
+    <th>Tournament Heat</th><th>Finished</th><th>Edit</th><th>ID</th><th>Run</th><th>Result</th>
   </tr>
-{% for th in tournamentHeats %}
 
   <tr>
   	<td> {{th.name }} </td>
@@ -75,7 +96,8 @@
     </td>
 
   </tr>
-{% endfor %}
+
+
 </table>
  
 <br>
