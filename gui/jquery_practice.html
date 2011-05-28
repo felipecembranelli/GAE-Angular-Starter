@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>Tournament Server</title>
+	<script src="_js/jquery-1.4.2.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="../static/main.css" type="text/css">  
+  
+    <script type "text/javascript">
+      
+      $(function () {
+      	//alert("Before Ajax");
+      	
+        //callback("My data", "My Status");
+        $.ajax({
+      		type: "GET",
+      		url: "../jsonapi/heat_result",
+      		dataType: 'json',
+      		success: callback,
+      		timeout: 100
+      	});
+      	
+		$.ajax({
+      		type: "GET",
+      		url: "../jsonapi/user",
+      		dataType: 'json',
+      		success: update_greeting,
+      		timeout: 100
+      	});
+      });
+    
+    function update_greeting(data, status) {
+       key = "nickname";
+  	   if (data.hasOwnProperty(key)){
+    	  //alert ("Nickname = "+data[key]);
+    	  $("#nickname").text(data[key]);
+  	   }
+  	   
+
+    }
+    
+    function callback(data, status) {
+    	//alert(status);
+    	//alert(data);
+
+  		$.each(data, function(key, val) {
+    //alert(key);
+    $("<p>" + key + " = " + val + "</p>").insertBefore("#heatresult");
+    if (key=="ids") {
+    	//alert("Found "+key);
+        $.each(val, function(val) {
+          $("<li>"+val+"</li>").insertBefore("#heatresult");
+          //alert("With value " + val);
+        });
+
+    }
+  });
+    
+    
+    }
+    </script>
+    
+  </head>
+  <body>
+
+<p id="nickname"> This is the non-updated text </p><br>
+<p id="heatresult"> Insert items before this element. </p><br>
+
+
+  </body>
+</html>
