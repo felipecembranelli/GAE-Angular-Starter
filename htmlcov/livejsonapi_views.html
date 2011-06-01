@@ -21,9 +21,9 @@
             <span class='pc_cov'>0%</span>
         </h1>
         <h2 class='stats'>
-            45 statements
+            47 statements
             <span class='run hide_run' onclick='toggle_lines(this, "run")'>0 run</span>
-            <span class='mis' onclick='toggle_lines(this, "mis")'>45 missing</span>
+            <span class='mis' onclick='toggle_lines(this, "mis")'>47 missing</span>
             <span class='exc' onclick='toggle_lines(this, "exc")'>0 excluded</span>
             
         </h2>
@@ -97,9 +97,11 @@
 <p id='n61' class='stm mis'><a href='#n61'>61</a></p>
 <p id='n62' class='stm mis'><a href='#n62'>62</a></p>
 <p id='n63' class='stm mis'><a href='#n63'>63</a></p>
-<p id='n64' class='pln'><a href='#n64'>64</a></p>
+<p id='n64' class='stm mis'><a href='#n64'>64</a></p>
 <p id='n65' class='stm mis'><a href='#n65'>65</a></p>
 <p id='n66' class='pln'><a href='#n66'>66</a></p>
+<p id='n67' class='stm mis'><a href='#n67'>67</a></p>
+<p id='n68' class='pln'><a href='#n68'>68</a></p>
                 
             </td>
             <td class='text' valign='top'>
@@ -162,13 +164,15 @@
 <p id='t57' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t58' class='stm mis'><span class='key'>def</span> <span class='nam'>get_apps</span><span class='op'>(</span><span class='nam'>request</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
 <p id='t59' class='stm mis'>&nbsp; &nbsp; <span class='nam'>apps</span> <span class='op'>=</span> <span class='nam'>models</span><span class='op'>.</span><span class='nam'>App</span><span class='op'>.</span><span class='nam'>all</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t60' class='stm mis'>&nbsp; &nbsp; <span class='nam'>result</span> <span class='op'>=</span> <span class='op'>{</span><span class='op'>}</span><span class='strut'>&nbsp;</span></p>
+<p id='t60' class='stm mis'>&nbsp; &nbsp; <span class='nam'>result</span> <span class='op'>=</span> <span class='op'>[</span><span class='op'>]</span><span class='strut'>&nbsp;</span></p>
 <p id='t61' class='stm mis'>&nbsp; &nbsp; <span class='key'>for</span> <span class='nam'>app</span> <span class='key'>in</span> <span class='nam'>apps</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t62' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>result</span><span class='op'>[</span><span class='str'>&#39;name&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>app</span><span class='op'>.</span><span class='nam'>name</span><span class='strut'>&nbsp;</span></p>
-<p id='t63' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>result</span><span class='op'>[</span><span class='str'>&#39;id&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>app</span><span class='op'>.</span><span class='nam'>key</span><span class='op'>(</span><span class='op'>)</span><span class='op'>.</span><span class='nam'>id</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t64' class='pln'><span class='strut'>&nbsp;</span></p>
-<p id='t65' class='stm mis'>&nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>http</span><span class='op'>.</span><span class='nam'>HttpResponse</span><span class='op'>(</span><span class='nam'>json</span><span class='op'>.</span><span class='nam'>dumps</span><span class='op'>(</span><span class='nam'>result</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t62' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>d</span> <span class='op'>=</span> <span class='op'>{</span><span class='op'>}</span><span class='strut'>&nbsp;</span></p>
+<p id='t63' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>d</span><span class='op'>[</span><span class='str'>&#39;name&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>app</span><span class='op'>.</span><span class='nam'>name</span><span class='strut'>&nbsp;</span></p>
+<p id='t64' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>d</span><span class='op'>[</span><span class='str'>&#39;id&#39;</span><span class='op'>]</span> <span class='op'>=</span> <span class='nam'>app</span><span class='op'>.</span><span class='nam'>key</span><span class='op'>(</span><span class='op'>)</span><span class='op'>.</span><span class='nam'>id</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t65' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>result</span><span class='op'>.</span><span class='nam'>append</span><span class='op'>(</span><span class='nam'>d</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t66' class='pln'><span class='strut'>&nbsp;</span></p>
+<p id='t67' class='stm mis'>&nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>http</span><span class='op'>.</span><span class='nam'>HttpResponse</span><span class='op'>(</span><span class='nam'>json</span><span class='op'>.</span><span class='nam'>dumps</span><span class='op'>(</span><span class='nam'>result</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t68' class='pln'><span class='strut'>&nbsp;</span></p>
                 
             </td>
         </tr>
