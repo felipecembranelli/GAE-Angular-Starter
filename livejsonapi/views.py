@@ -57,10 +57,12 @@ def get_heat_result(request):
     
 def get_apps(request):
     apps = models.App.all()
-    result = {}
-    for app in apps: 
-        result['name'] = app.name
-        result['id'] = app.key().id()
+    result = []
+    for app in apps:
+        d = {} 
+        d['name'] = app.name
+        d['id'] = app.key().id()
+        result.append(d)
         
     return http.HttpResponse(json.dumps(result))
   

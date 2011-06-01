@@ -28,6 +28,15 @@
       		timeout: 10000
       	});
 		
+    	//Get apps
+		$.ajax({
+      		type: "GET",
+      		url: "../jsonapi/get_apps",
+      		dataType: 'json',
+      		success: update_apps,
+      		timeout: 10000
+      	});
+		
       });
     
     function update_greeting(data, status) {
@@ -44,12 +53,14 @@
             //alert(val.name);
     		$("<tr> <td> "+val.name+" </td><td align='center'> "+val.name+" </td></tr>").insertAfter("#tournament_table_header");
           });
-    	
-        key = "nickname";
-   	   if (data.hasOwnProperty(key)){
-     	  //alert ("Nickname = "+data[key]);
-     	  $("#nickname").text("Welcome back "+data[key]);
-   	   }
+   
+     }
+    
+    function update_apps(data, status) {
+    	$.each(data, function(key, val)  {
+            //alert(val.name);
+    		$("<tr> <td> "+val.name+" </td><td align='center'> "+val.name+" </td></tr>").insertAfter("#apps_table_header");
+          });    	
      }
  
     </script>
@@ -78,32 +89,9 @@
   
       
 <table class="design apps" cellspacing="0" width="900">
-  <tr style="color:#00ce1d;font-weight:bold;text-align:center">
+  <tr id="apps_table_header" style="color:#00ce1d;font-weight:bold;text-align:center">
     <th>App</th><th>TBD</th><th>TBD</th><th>TBD</th><th>TBD</th><th></th>
   </tr>
-{% for app in apps %}
-
-  <tr>
-  	<td> {{app.name }} </td>
-   
-    <td align="center"><
-         {{app.url}}
-    </td>
-	<td align="center">
-	    <a href="/edit_app/{{app.key.id}}/"> Edit </a>
-    </td>
-	<td align="center">
-	    {{app.key.id}}
-    </td>
-    <td align="center">
-        <a href="/check_app/{{app.key.id}}/"> Check </a>
-    </td>
-    <td align="center">
-        <a href="/delete_app/{{app.key.id}}/"> Delete App </a>
-    </td>
-
-  </tr>
-{% endfor %}
 
 </table>
  
@@ -114,42 +102,15 @@
 DEFAULT_HUNTERTICTACTOE, DEFAULT_INVALIDRETURNTICTACTOE, DEFAULT_LOOPBACKTICTACTOE</i>
 <br>        
 <table class="design players" cellspacing="0" width="900">
-  <tr style="color:#00ce1d;font-weight:bold;text-align:center">
+  <tr id="course_table_header" style="color:#00ce1d;font-weight:bold;text-align:center">
     <th>Course</th><th>TBD</th><th>TBD</th><th>TBD</th><th>TBD</th><th></th>
   </tr>
-{% for course in courses %}
 
-  <tr>
-    <td align="center">
-  	    {{course.name }} 
-  	</td>
-    <td align="center">
-	    {{course.key.id}}
-    </td>
-	<td align="center">
-	    <a href="/edit_course/{{course.key.id}}/"> Edit </a>
-    </td>
-    <td align="center">
-    	<a href="/delete_course/{{course.key.id}}/"> Delete </a>
-    </td>
-    <td align="center">
-    </td>
-
-  </tr>
-{% endfor %}
 
 </table>
 <br>
 <a class="addCourse" href="/add_course"> Add a course </a> <br>
 
-Debug info: <br> <br>
-domain_url is {{domain_url}} <br>
-user is {{user.nickname}} <br>
-signout is {{sign_out}} <br>
-is_admin is {{is_admin}} <br>
-sign_in is {{sign_in}} <br>
-page is {{page}} <br>
- 
 
     <script type="text/javascript">
       var rpxJsHost = (("https:" == document.location.protocol) ? "https://" : "http://static.");
