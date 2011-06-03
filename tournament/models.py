@@ -126,6 +126,31 @@ class TournamentHeat(db.Model):
         self.delete_games()
         return super(TournamentHeat, self).delete()
 
+class Team(db.Model):
+    name = db.StringProperty(required=True)
+    owner = db.ReferenceProperty(User, collection_name='teams', required=True)
+    created = db.DateTimeProperty(auto_now_add=True)
+    
+    @staticmethod
+    def add_team(name, owner):
+        team = Team(name=name, owner=owner)
+        team.put()
+        
+    def get_owner(self):
+        return self.owner
+
+    def add_team_member(self, user):
+        #You should check that the user isn't already a member or the owner first.
+        membership = Membership(team=self, user=user)
+        membership.put()
+
+class Membership(db.Model):
+    team = db.ReferenceProperty(Team, required=True)  
+    user = db.ReferenceProperty(User, required=True)
+    created = db.DateTimeProperty(auto_now_add=True)
+   
+    
+    
 class Game(db.Model):
     tournamentHeat = db.ReferenceProperty(TournamentHeat, collection_name='tournamentGames', required=True)
     appX = db.ReferenceProperty(App, collection_name='XGames', required=False)
