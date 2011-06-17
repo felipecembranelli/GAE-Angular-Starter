@@ -29,12 +29,12 @@ class RPXData(db.Model):
             auth_url = 'https://rpxnow.com/api/v2/auth_info'
             api_key = '89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f'
             #loginURL = 'https://pivotalexpert.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fdeli.appspot.com%2Frpx.php'
-            base_token_url = '/rpx.php' #'http://deli.appspot.com/rpx.php'
+            base_token_url = '/rpx.php'  #'http://deli.appspot.com/rpx.php'
             rpx = RPXData(janrainID = janrainID,
                           auth_url=auth_url,
                           api_key = api_key,
-            #             tokenURL = tokenURL, 
-                          base_token_url= base_token_url )                             
+                          # tokenURL = tokenURL,
+                          base_token_url= base_token_url)                             
             rpx.put()
             #Create a default rpx entry, save it, and return it. 
         return rpx
@@ -84,7 +84,7 @@ class RPXTokenHandler(webapp.RequestHandler):
     r = urlfetch.fetch(url=url,
                        payload=urllib.urlencode(args),
                        method=urlfetch.POST,
-                       headers={'Content-Type':'application/x-www-form-urlencoded'}
+                       headers={'Content-Type': 'application/x-www-form-urlencoded'}
                        )
     logging.info('response: '+str(r.content))
     json = simplejson.loads(r.content)
@@ -97,8 +97,10 @@ class RPXTokenHandler(webapp.RequestHandler):
       email = None
       if 'email' in json['profile']:
           email = json['profile']['email']
-      if nickname: nickname = str(nickname)
-      if email: email = str(email)
+      if nickname:
+          nickname = str(nickname)
+      if email:
+          email = str(email)
 
       logging.info('rpx login successful, unique_identifier: '+str(unique_identifier)+', nickname: '+str(nickname)+', email: '+str(email))
       # log the user in using the unique_identifier
@@ -167,6 +169,7 @@ application = webapp.WSGIApplication(
                                      [('/rpx.php', RPXTokenHandler),
                                       ('/logout', LogoutHandler)],
                                      debug=True)
+
 
 def main():
     run_wsgi_app(application)

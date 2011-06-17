@@ -13,8 +13,10 @@ import re
 import base64
 from myutil import common
 
+
 class RPXData(db.Model):
-    #After refactoring put these into a default model entry. 
+
+    #After refactoring put these into a default model entry.
     #url = db.StringProperty(required=True)
     #created = db.DateTimeProperty(auto_now_add=True)
 
@@ -28,18 +30,18 @@ class RPXData(db.Model):
             loginURL = 'https://pivotalexpert1.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fdeli.appspot.com%2Frpx.php'
             tokenURL = 'http://deli.appspot.com/rpx.php'
             rpx = RPXData(janrainID = jainrainID,
-                          url=url,
+                          url = url,
                           api_key = api_key,
-                          tokenURL = tokenURL, 
+                          tokenURL = tokenURL,
                           loginURL = loginURL)
             rpx.put()
-            #Create a default rpx entry, save it, and return it. 
+            #Create a default rpx entry, save it, and return it.
         return rpx
-     
+
     @staticmethod
     def get_janrain_id():
         return 'pivotalexpert1'
-                
+
     @staticmethod
     def get_auth_url():
         return 'https://rpxnow.com/api/v2/auth_info'
@@ -47,13 +49,13 @@ class RPXData(db.Model):
     @staticmethod
     def get_api_key():
         return '89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f'
-    
+
     @staticmethod
     def get_login_url():
         rpxdata = RPXData.get_rpx_data()
-        return 'https://'+ rpxdata.get_janrain_id() +'.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fdeli.appspot.com%2Frpx.php'
+        return 'https://' + rpxdata.get_janrain_id() + '.rpxnow.com/openid/v2/signin?token_url=http%3A%2F%2Fdeli.appspot.com%2Frpx.php'
 
-    
+
 class RPXTokenHandler(webapp.RequestHandler):
   def get(self):
     logging.info('RPXTokenHandler.get start')
@@ -61,24 +63,24 @@ class RPXTokenHandler(webapp.RequestHandler):
   def post(self):
     logging.info('RPXTokenHandler.post start')
     token = self.request.get('token')
-    logging.info('token: '+str(token))
+    logging.info('token: ' + str(token))
     url = 'https://rpxnow.com/api/v2/auth_info'
     #url = RPXData.get_auth_url()
     args = {
       'format': 'json',
-      'apiKey': '89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f',  #RPXData.get_api_key(), # 
+      'apiKey': '89ce5416ddbd4d41e021fe8ccd0d3091c6a98a6f',  # RPXData.get_api_key(),
       'token': token
       }
-    logging.info('calling url: '+str(url))
+    logging.info('calling url: ' + str(url))
     r = urlfetch.fetch(url=url,
                        payload=urllib.urlencode(args),
                        method=urlfetch.POST,
-                       headers={'Content-Type':'application/x-www-form-urlencoded'}
+                       headers={'Content-Type': 'application/x-www-form-urlencoded'}
                        )
-    logging.info('response: '+str(r.content))
+    logging.info('response: ' + str(r.content))
     json = simplejson.loads(r.content)
-    logging.info('json response: '+str(json))
-    if json['stat'] == 'ok':   
+    logging.info('json response: ' + str(json))
+    if json['stat'] == 'ok':
       unique_identifier = str(json['profile']['identifier'])
       nickname = None
       if 'preferredUsername' in json['profile']:
@@ -86,18 +88,24 @@ class RPXTokenHandler(webapp.RequestHandler):
       email = None
       if 'email' in json['profile']:
           email = json['profile']['email']
-      if nickname: nickname = str(nickname)
-      if email: email = str(email)
+      if nickname:
+          nickname = str(nickname)
+      if email:
+          email = str(email)
 
-      logging.info('rpx login successful, unique_identifier: '+str(unique_identifier)+', nickname: '+str(nickname)+', email: '+str(email))
+      logging.info('rpx login successful, unique_identifier: ' +
+                   str(unique_identifier) + ', nickname: ' + str(nickname) +
+                   ', email: ' + str(email))
       # log the user in using the unique_identifier
       # this should your cookies or session you already have implemented
-      self.log_user_in(user_id=unique_identifier, nickname=nickname, email=email)
+      self.log_user_in(user_id=unique_identifier,
+                       nickname=nickname, email=email)
       logging.info('login successful, redirect to /')
       self.redirect('/')
     else:
       logging.error('there was an error in rpx login')
-      self.response.out.write("<html><body><p>Hi there!<br>"+str(json)+"</p></body></html>")
+      self.response.out.write("<html><body><p>Hi there!<br>" + str(json) +
+                              "</p></body></html>")
       #self.redirect('/')
 
   def log_user_in(self, user_id, nickname=None, email=None):
@@ -105,15 +113,16 @@ class RPXTokenHandler(webapp.RequestHandler):
     session_id = models.Session.create_session_for_user(user_id)
     addCookie(self, name = 'session_id', value = session_id)
 
+
 class LogoutHandler(webapp.RequestHandler):
   def get(self):
     logging.info('LogoutHandler.get start')
     self.do(self.request)
-  
+
   def post(self):
     logging.info('LogoutHandler.post start')
     self.do(self.request)
-  
+
   def do(self, request):
     try:
         logging.info('cookies: '+str(self.request.cookies))
@@ -122,16 +131,21 @@ class LogoutHandler(webapp.RequestHandler):
         db.delete(db.Key.from_path(models.Session.kind(), long(id)))
     except Exception, e:
         logging.warning('Error while deleting session: '+str(e))
-    
+
     addCookie(self, name = 'session_id', value = '', expires = -100000)
     target = request.get('target')
     if not target:
       target = '/'
     self.redirect(target)
 
-def addCookie(handler, name, value, expires = 86400, domain = None, path = '/'):
-  logging.info('addCookie, handler: '+str(handler)+', name: '+str(name)+', value: '+str(value)+\
-               ', expires: '+str(expires)+', domain: '+str(domain)+', path: '+str(path))
+
+def addCookie(handler, name, value,
+              expires = 86400, domain = None, path = '/'):
+
+  logging.info('addCookie, handler: ' + str(handler) + ', name: ' + str(name) +
+               ', value: '+str(value) + \
+               ', expires: ' + str(expires) + ', domain: ' + str(domain) +
+               ', path: ' + str(path))
   if domain == None:
     domain = common.getDomainName(handler.request)
 
@@ -147,15 +161,17 @@ def addCookie(handler, name, value, expires = 86400, domain = None, path = '/'):
   #and this is a dirty fix
 
   headerStr = simpleCookieObj.output()
-  logging.info('add cookie: '+str(headerStr))
+  logging.info('add cookie: ' + str(headerStr))
   regExObj = re.compile('^Set-Cookie: ')
-  handler.response.headers.add_header('Set-Cookie', str(regExObj.sub('', headerStr, count=1)))
+  handler.response.headers.add_header('Set-Cookie',
+                                      str(regExObj.sub('', headerStr, count=1)))
 
 
 application = webapp.WSGIApplication(
                                      [('/rpx.php', RPXTokenHandler),
                                       ('/logout', LogoutHandler)],
                                      debug=True)
+
 
 def main():
     run_wsgi_app(application)

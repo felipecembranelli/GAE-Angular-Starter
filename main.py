@@ -42,12 +42,14 @@ import django.core.handlers.wsgi
 import django.core.signals
 import django.db
 
+
 def log_exception(*args, **kwds):
   logging.exception('Exception in request:')
 
 # Log errors.
 django.dispatch.Signal.connect(
   django.core.signals.got_request_exception, log_exception)
+
 
 def main():
   # Ensure the Django zipfile is in the path if required.
