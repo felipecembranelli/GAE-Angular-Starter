@@ -5,18 +5,11 @@ import urllib
 import sys
 
 # AppEngine imports
-#from google.appengine.api import users
-from google.appengine.api import urlfetch
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
-from google.appengine.ext.db import djangoforms
-from google.appengine.api import memcache
-from google.appengine.api import quota
-from google.appengine.api.labs import taskqueue
 
 #import django
 from django import http
-from django import shortcuts
 from django.utils import simplejson as json
 from django.conf import settings
 
@@ -27,42 +20,151 @@ from django.contrib.sites.models import Site
 from django.utils.http import urlencode as django_urlencode
 
 
-import tournament.models as models
-
-def get_user(request):
-    #user = models.User.all().get()
-    result = {}
-    #result['nickname'] = "Haven't finished this yet."
-    result = {"nickname": "live tommy"}
+def phones(request):
+    result = []
+    phone = {"age": 0, "id": "wifi", "imageUrl": "img/phones/motorola-xoom-with-wi-fi.0.jpg", "name": "Motorola XOOM\u2122 with Wi-Fi", "snippet": "The Next, Next Generation\r\n\r\nExperience the future with Motorola XOOM with Wi-Fi, the world's first tablet powered by Android 3.0 (Honeycomb)."}
+    result.append(phone)
+    phone = {"age": 1, "id": "xoom", "imageUrl": "img/phones/motorola-xoom.0.jpg", "name": "MOTOROLA XOOM\u2122", "snippet": "The Next, Next Generation\n\nExperience the future with MOTOROLA XOOM, the world's first tablet powered by Android 3.0 (Honeycomb)."}
+    result.append(phone)
     return http.HttpResponse(json.dumps(result))
  
-def get_tournament_heats(request):
-    heats = models.TournamentHeat.all()
-    
-    result = []
-    for heat in heats:
-        d = {}
-        d['name'] = heat.name
-        d['jsonResult'] = heat.jsonResult
-        result.append(d)
+def xoom(request):
 
+    temp = '''
+    {
+    "additionalFeatures": "Front-facing camera. Sensors: proximity, ambient light, barometer, gyroscope.", 
+    "android": {
+        "os": "Android 3.0", 
+        "ui": "Android"
+    }, 
+    "availability": [
+        "Verizon"
+    ], 
+    "battery": {
+        "standbyTime": "336 hours", 
+        "talkTime": "24 hours", 
+        "type": "Other (3250 mAH)"
+    }, 
+    "camera": {
+        "features": [
+            "Flash", 
+            "Video"
+        ], 
+        "primary": "5.0 megapixels"
+    }, 
+    "connectivity": {
+        "bluetooth": "Bluetooth 2.1", 
+        "cell": "CDMA 800 /1900 LTE 700, Rx diversity in all bands", 
+        "gps": true, 
+        "infrared": false, 
+        "wifi": "802.11 a/b/g/n"
+    }, 
+    "description": "MOTOROLA XOOM has a super-powerful dual-core processor and Android\u2122 3.0 (Honeycomb) \u2014 the Android platform designed specifically for tablets. With its 10.1-inch HD widescreen display, you\u2019ll enjoy HD video in a thin, light, powerful and upgradeable tablet.", 
+    "display": {
+        "screenResolution": "WXGA (1200 x 800)", 
+        "screenSize": "10.1 inches", 
+        "touchScreen": true
+    }, 
+    "hardware": {
+        "accelerometer": true, 
+        "audioJack": "3.5mm", 
+        "cpu": "1 GHz Dual Core Tegra 2", 
+        "fmRadio": false, 
+        "physicalKeyboard": false, 
+        "usb": "USB 2.0"
+    }, 
+    "id": "motorola-xoom", 
+    "images": [
+        "img/phones/motorola-xoom.0.jpg", 
+        "img/phones/motorola-xoom.1.jpg", 
+        "img/phones/motorola-xoom.2.jpg"
+    ], 
+    "name": "MOTOROLA XOOM\u2122", 
+    "sizeAndWeight": {
+        "dimensions": [
+            "249.0 mm (w)", 
+            "168.0 mm (h)", 
+            "12.7 mm (d)"
+        ], 
+        "weight": "726.0 grams"
+    }, 
+    "storage": {
+        "flash": "32000MB", 
+        "ram": "1000MB"
+    }
+}    
+    '''
+    result = json.loads(temp)
     return http.HttpResponse(json.dumps(result))
+    
+def wifi(request):
 
-def get_heat_result(request):
-    #heat = models.TournamentHeat.all().get()
-    result = {}
-    result = {"appIDs": [[2, 1], [1, 1]], "losses": {"1": 1, "2": 1}, "ids": ["2", "1"], "points": {"1": 1, "2": 1}, "appNames": {"1": "Test from live app 1", "2": "Test from live app 2"}, "matchResults": {"1": {"2": "1"}, "2": {"1": "1"}}}
-    
-    return http.HttpResponse(json.dumps(result)) 
-    
-def get_apps(request):
-    apps = models.App.all()
-    result = []
-    for app in apps:
-        d = {} 
-        d['name'] = app.name
-        d['id'] = app.key().id()
-        result.append(d)
-        
+    temp = '''
+{
+    "additionalFeatures": "Sensors: proximity, ambient light, barometer, gyroscope", 
+    "android": {
+        "os": "Android 3.0", 
+        "ui": "Honeycomb"
+    }, 
+    "availability": [
+        ""
+    ], 
+    "battery": {
+        "standbyTime": "336 hours", 
+        "talkTime": "24 hours", 
+        "type": "Other ( mAH)"
+    }, 
+    "camera": {
+        "features": [
+            "Flash", 
+            "Video"
+        ], 
+        "primary": "5.0 megapixels"
+    }, 
+    "connectivity": {
+        "bluetooth": "Bluetooth 2.1", 
+        "cell": "", 
+        "gps": true, 
+        "infrared": false, 
+        "wifi": "802.11 b/g/n"
+    }, 
+    "description": "Motorola XOOM with Wi-Fi has a super-powerful dual-core processor and Android\u2122 3.0 (Honeycomb) \u2014 the Android platform designed specifically for tablets. With its 10.1-inch HD widescreen display, you\u2019ll enjoy HD video in a thin, light, powerful and upgradeable tablet.", 
+    "display": {
+        "screenResolution": "WXGA (1200 x 800)", 
+        "screenSize": "10.1 inches", 
+        "touchScreen": true
+    }, 
+    "hardware": {
+        "accelerometer": true, 
+        "audioJack": "3.5mm", 
+        "cpu": "1 GHz Dual Core Tegra 2", 
+        "fmRadio": false, 
+        "physicalKeyboard": false, 
+        "usb": "USB 2.0"
+    }, 
+    "id": "motorola-xoom-with-wi-fi", 
+    "images": [
+        "img/phones/motorola-xoom-with-wi-fi.0.jpg", 
+        "img/phones/motorola-xoom-with-wi-fi.1.jpg", 
+        "img/phones/motorola-xoom-with-wi-fi.2.jpg", 
+        "img/phones/motorola-xoom-with-wi-fi.3.jpg", 
+        "img/phones/motorola-xoom-with-wi-fi.4.jpg", 
+        "img/phones/motorola-xoom-with-wi-fi.5.jpg"
+    ], 
+    "name": "Motorola XOOM\u2122 with Wi-Fi", 
+    "sizeAndWeight": {
+        "dimensions": [
+            "249.1 mm (w)", 
+            "167.8 mm (h)", 
+            "12.9 mm (d)"
+        ], 
+        "weight": "708.0 grams"
+    }, 
+    "storage": {
+        "flash": "32000MB", 
+        "ram": "1000MB"
+    }
+}
+    '''
+    result = json.loads(temp)
     return http.HttpResponse(json.dumps(result))
-  

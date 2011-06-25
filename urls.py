@@ -16,8 +16,5 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('',
     (r'^admin/', include('urlsadmin')),
-    (r'^tictactoe', include('tictactoe.urls')),
     (r'^jsonapi', include('livejsonapi.urls')),    
-    url(r'', include('tournament.urls')),
-#    (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 )

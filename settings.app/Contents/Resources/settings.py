@@ -104,8 +104,10 @@ TEMPLATE_DIRS = (
 
 INSTALLED_APPS = (
      'appengine_django',
+     'tournament',
      'gaeunit',
      'myutil',
+     'tictactoe',
      'livejsonapi'
 )
 
